@@ -770,24 +770,59 @@ function enviarPedidoWhatsapp() {
   }
 
   const textoPago = {
-    efectivo:      '💵 Pago: *Efectivo al momento de la entrega*',
-    transferencia: '🏦 Pago: *Transferencia* — te envío el comprobante por este chat',
-    tarjeta:       '💳 Pago: *Tarjeta* (al momento de la entrega)',
+    efectivo:      'Efectivo al momento de la entrega',
+    transferencia: 'Transferencia — envio comprobante por este chat',
+    tarjeta:       'Tarjeta al momento de la entrega',
   };
 
-  let msg = `Hola! 👋 Quiero hacer un pedido:\n\n`;
+  const C_PROD = 32, C_CANT = 5, C_PRECIO = 10;
+  const SEP = '-'.repeat(C_PROD + C_CANT + C_PRECIO + 4);
 
+  function rpad(s, n) { s = String(s); return s.length >= n ? s : s + ' '.repeat(n - s.length); }
+  function lpad(s, n) { s = String(s); return s.length >= n ? s : ' '.repeat(n - s.length) + s; }
+
+  function wrapWords(str, maxLen) {
+    if (str.length <= maxLen) return [str];
+    const words = str.split(' ');
+    const lines = [];
+    let cur = '';
+    for (const w of words) {
+      const next = cur ? cur + ' ' + w : w;
+      if (next.length <= maxLen) { cur = next; }
+      else { if (cur) lines.push(cur); cur = w.length > maxLen ? w.slice(0, maxLen) : w; }
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  }
+
+  function fila(nombre, cant, precio) {
+    const precioStr = precio !== null ? formatearPrecio(precio) : '';
+    const cantStr   = cant   !== null ? String(cant) : '';
+    const lineas = wrapWords(nombre, C_PROD);
+    return lineas.map((l, i) =>
+      rpad(l, C_PROD) + '  ' +
+      lpad(i === 0 ? cantStr   : '', C_CANT) + '  ' +
+      lpad(i === 0 ? precioStr : '', C_PRECIO)
+    ).join('\n');
+  }
+
+  const cabecera = rpad('Producto', C_PROD) + '  ' + lpad('Cant.', C_CANT) + '  ' + lpad('Precio', C_PRECIO);
+  let filas = '';
   entries.forEach(({ producto, cantidad }) => {
-    msg += `🍣 ${producto.nombre}${cantidad > 1 ? ` ×${cantidad}` : ''} — ${formatearPrecio(producto.precio * cantidad)}\n`;
+    filas += fila(producto.nombre, cantidad, producto.precio * cantidad) + '\n';
   });
+  const totalFila = fila('TOTAL', null, carrito.getTotalPrecio());
 
-  msg += `\nTotal: *${formatearPrecio(carrito.getTotalPrecio())}*\n\n`;
-  msg += textoPago[pagoMetodo] + '\n\n';
-  msg += `📋 *Mis datos:*\n`;
-  msg += `👤 ${nombre}\n`;
-  msg += `📞 ${telefono}\n`;
-  msg += `📍 ${direccion}`;
-  if (nota) msg += `\n📝 ${nota}`;
+  const tabla = '```\n' + cabecera + '\n' + SEP + '\n' + filas + SEP + '\n' + totalFila + '\n```';
+
+  let msg = `NUEVO PEDIDO - Sushi Nan\n\n`;
+  msg += tabla + '\n\n';
+  msg += `Pago: ${textoPago[pagoMetodo]}\n\n`;
+  msg += `DATOS DEL CLIENTE\n`;
+  msg += `Nombre:    ${nombre}\n`;
+  msg += `Telefono:  ${telefono}\n`;
+  msg += `Direccion: ${direccion}`;
+  if (nota) msg += `\nNota:      ${nota}`;
 
   const url = `https://wa.me/${DATA.negocio.telefono_whatsapp}?text=${encodeURIComponent(msg)}`;
   window.open(url, '_blank');
