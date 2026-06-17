@@ -119,25 +119,42 @@ function renderProductos() {
 //  VARIACIONES (rolls cuyo precio depende de la envoltura)
 // =====================
 function tieneVariaciones(p) {
+  if (Array.isArray(p.variaciones)) return p.variaciones.length > 0;
   return !!(p.variaciones && p.variaciones.opciones && p.variaciones.opciones.length);
 }
 
 function precioMinimo(p) {
-  return Math.min(...p.variaciones.opciones.map(o => o.precio));
+  if (!tieneVariaciones(p)) return 0;
+  if (!Array.isArray(p.variaciones)) {
+    return Math.min(...p.variaciones.opciones.map(o => o.precio));
+  }
+  // Para array: suma el mínimo de cada dimensión
+  return p.variaciones.reduce((total, dim) => {
+    const minPrecio = Math.min(...dim.opciones.map(o => o.precio));
+    return total + minPrecio;
+  }, 0);
 }
 
 function precioCardTexto(p) {
   return tieneVariaciones(p) ? `desde ${formatearPrecio(precioMinimo(p))}` : formatearPrecio(p.precio);
 }
 
-// Construye un producto concreto a partir de la envoltura elegida.
-// El id compuesto hace que cada envoltura sea una línea distinta del carrito.
-function productoConVariacion(p, opcion) {
+// Construye un producto concreto a partir de la(s) variación(es) elegida(s).
+// El id compuesto hace que cada combinación sea una línea distinta del carrito.
+// variacionesSeleccionadas puede ser:
+//   - Un objeto simple (estructura antigua): {id, nombre, precio}
+//   - Un array (estructura nueva): [{id, nombre, precio}, ...]
+function productoConVariacion(p, variacionesSeleccionadas) {
+  const variaciones = Array.isArray(variacionesSeleccionadas) ? variacionesSeleccionadas : [variacionesSeleccionadas];
+  const idCompuesto = p.id + '__' + variaciones.map(v => v.id).join('__');
+  const nombresVar = variaciones.map(v => v.nombre).join(' + ');
+  const precioTotal = variaciones.reduce((sum, v) => sum + v.precio, 0);
+
   return {
-    id: p.id + '__' + opcion.id,
-    nombre: p.nombre + ' — ' + opcion.nombre,
+    id: idCompuesto,
+    nombre: p.nombre + ' — ' + nombresVar,
     descripcion: p.descripcion,
-    precio: opcion.precio,
+    precio: precioTotal,
     imagen: p.imagen,
     badge: p.badge
   };
@@ -320,7 +337,17 @@ function inicializarModal() {
 
 function abrirModal(producto) {
   modalProductoActual = producto;
-  modalVariacionActual = tieneVariaciones(producto) ? producto.variaciones.opciones[0] : null;
+
+  // Inicializar modalVariacionActual según la estructura
+  if (!tieneVariaciones(producto)) {
+    modalVariacionActual = null;
+  } else if (Array.isArray(producto.variaciones)) {
+    // Estructura nueva: array de dimensiones. Selecciona el primer elemento de cada dimensión
+    modalVariacionActual = producto.variaciones.map(dim => dim.opciones[0]);
+  } else {
+    // Estructura antigua: un solo objeto con opciones
+    modalVariacionActual = producto.variaciones.opciones[0];
+  }
 
   // Encuentra la categoría del producto para generar su ilustración.
   let catDelProducto = null;
@@ -360,9 +387,16 @@ function cerrarModal() {
 }
 
 function actualizarModalPrecio() {
-  const precio = modalVariacionActual
-    ? modalVariacionActual.precio
-    : (modalProductoActual ? modalProductoActual.precio : 0);
+  let precio = 0;
+  if (!modalVariacionActual) {
+    precio = modalProductoActual ? modalProductoActual.precio : 0;
+  } else if (Array.isArray(modalVariacionActual)) {
+    // Estructura nueva: suma los precios de todas las dimensiones
+    precio = modalVariacionActual.reduce((sum, v) => sum + v.precio, 0);
+  } else {
+    // Estructura antigua: precio único
+    precio = modalVariacionActual.precio;
+  }
   document.getElementById('modal-precio').textContent = formatearPrecio(precio);
 }
 
@@ -375,30 +409,65 @@ function renderModalVariaciones(producto) {
     return;
   }
   cont.style.display = '';
-  const v = producto.variaciones;
-  cont.innerHTML = `
-    <p class="modal-variaciones__label">${v.etiqueta || 'Opción'}</p>
-    <div class="modal-variaciones__opciones">
-      ${v.opciones.map((o, i) => `
-        <button class="variacion-btn${i === 0 ? ' activa' : ''}" data-i="${i}">
-          <span>${o.nombre}</span>
-          <strong>${formatearPrecio(o.precio)}</strong>
-        </button>`).join('')}
-    </div>`;
-  cont.querySelectorAll('.variacion-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      cont.querySelectorAll('.variacion-btn').forEach(b => b.classList.remove('activa'));
-      btn.classList.add('activa');
-      modalVariacionActual = producto.variaciones.opciones[+btn.dataset.i];
-      actualizarModalPrecio();
-      renderModalControles(producto);
+
+  if (!Array.isArray(producto.variaciones)) {
+    // ESTRUCTURA ANTIGUA: un solo objeto con opciones
+    const v = producto.variaciones;
+    cont.innerHTML = `
+      <p class="modal-variaciones__label">${v.etiqueta || 'Opción'}</p>
+      <div class="modal-variaciones__opciones">
+        ${v.opciones.map((o, i) => `
+          <button class="variacion-btn${i === 0 ? ' activa' : ''}" data-i="${i}">
+            <span>${o.nombre}</span>
+            <strong>${formatearPrecio(o.precio)}</strong>
+          </button>`).join('')}
+      </div>`;
+    cont.querySelectorAll('.variacion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        cont.querySelectorAll('.variacion-btn').forEach(b => b.classList.remove('activa'));
+        btn.classList.add('activa');
+        modalVariacionActual = producto.variaciones.opciones[+btn.dataset.i];
+        actualizarModalPrecio();
+        renderModalControles(producto);
+      });
     });
-  });
+  } else {
+    // ESTRUCTURA NUEVA: array de dimensiones
+    cont.innerHTML = producto.variaciones.map((dimension, dimIndex) => `
+      <div class="modal-variaciones__dimension">
+        <p class="modal-variaciones__label">${dimension.etiqueta || `Opción ${dimIndex + 1}`}</p>
+        <div class="modal-variaciones__opciones" data-dim="${dimIndex}">
+          ${dimension.opciones.map((o, optIndex) => `
+            <button class="variacion-btn${optIndex === 0 ? ' activa' : ''}" data-dim="${dimIndex}" data-opt="${optIndex}">
+              <span>${o.nombre}</span>
+              <strong>${formatearPrecio(o.precio)}</strong>
+            </button>`).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    cont.querySelectorAll('.variacion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dimIndex = +btn.dataset.dim;
+        const optIndex = +btn.dataset.opt;
+
+        // Deseleccionar otros botones en la misma dimensión
+        cont.querySelectorAll(`.variacion-btn[data-dim="${dimIndex}"]`).forEach(b => b.classList.remove('activa'));
+        btn.classList.add('activa');
+
+        // Actualizar modalVariacionActual (array)
+        modalVariacionActual[dimIndex] = producto.variaciones[dimIndex].opciones[optIndex];
+
+        actualizarModalPrecio();
+        renderModalControles(producto);
+      });
+    });
+  }
 }
 
 function renderModalControles(producto) {
   const container = document.getElementById('modal-controles');
-  // Para productos con variación, el item del carrito es la envoltura elegida.
+  // Para productos con variación, el item del carrito incluye todas las variaciones elegidas.
   const item = tieneVariaciones(producto)
     ? productoConVariacion(producto, modalVariacionActual)
     : producto;
