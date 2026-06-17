@@ -1,5 +1,3 @@
 {
-  "buildCommand": "",
-  "outputDirectory": "koari-web",
-  "framework": "html"
+  "outputDirectory": "koari-web"
 }
