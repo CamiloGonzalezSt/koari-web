@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderProductos();
   renderCarrito();
   renderFooter();
+  inicializarComunas();
   inicializarEventosCarrito();
   inicializarPago();
   inicializarBusqueda();
@@ -691,6 +692,21 @@ function inicializarWspFlotante() {
 // =====================
 //  PAGO
 // =====================
+//  COMUNAS
+// =====================
+function inicializarComunas() {
+  const sel = document.getElementById('cliente-comuna');
+  if (!sel || !DATA.negocio.zonas_cobertura) return;
+  const comunas = DATA.negocio.zonas_cobertura.split(',').map(c => c.trim()).filter(Boolean);
+  comunas.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    sel.appendChild(opt);
+  });
+}
+
+// =====================
 function inicializarPago() {
   renderDatosTransferencia();
 
@@ -756,10 +772,11 @@ function enviarPedidoWhatsapp() {
   const nombre    = document.getElementById('cliente-nombre').value.trim();
   const telefono  = document.getElementById('cliente-telefono').value.trim();
   const direccion = document.getElementById('cliente-direccion').value.trim();
+  const comuna    = document.getElementById('cliente-comuna').value.trim();
   const nota      = document.getElementById('cliente-nota').value.trim();
 
   let hayError = false;
-  [['cliente-nombre', nombre], ['cliente-telefono', telefono], ['cliente-direccion', direccion]].forEach(([id, val]) => {
+  [['cliente-nombre', nombre], ['cliente-telefono', telefono], ['cliente-direccion', direccion], ['cliente-comuna', comuna]].forEach(([id, val]) => {
     const el = document.getElementById(id);
     if (!val) { el.classList.add('campo-error'); hayError = true; }
     else       el.classList.remove('campo-error');
@@ -821,7 +838,7 @@ function enviarPedidoWhatsapp() {
   msg += `DATOS DEL CLIENTE\n`;
   msg += `Nombre:    ${nombre}\n`;
   msg += `Telefono:  ${telefono}\n`;
-  msg += `Direccion: ${direccion}`;
+  msg += `Direccion: ${direccion}, ${comuna}`;
   if (nota) msg += `\nNota:      ${nota}`;
 
   const url = `https://wa.me/${DATA.negocio.telefono_whatsapp}?text=${encodeURIComponent(msg)}`;

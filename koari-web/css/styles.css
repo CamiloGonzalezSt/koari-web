@@ -1092,9 +1092,36 @@ header, nav, main, aside, footer, .hero, .overlay {
   background: rgba(232,17,45,0.04);
 }
 
-.cliente-campo input.campo-error {
+.cliente-campo input.campo-error,
+.cliente-campo select.campo-error {
   border-color: rgba(232,17,45,0.7);
   background: rgba(232,17,45,0.06);
+}
+
+.cliente-campo select {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: var(--texto);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  cursor: pointer;
+}
+
+.cliente-campo select:focus {
+  border-color: rgba(232,17,45,0.5);
+  background: rgba(232,17,45,0.04);
+}
+
+.cliente-campo select option {
+  background: var(--bg-card);
+  color: var(--texto);
 }
 
 /* =====================
