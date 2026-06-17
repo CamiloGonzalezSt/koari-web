@@ -917,7 +917,7 @@
           "nombre": "Gohan 1 — Camarón Tempura",
           "descripcion": "Camarón tempura, queso, palta, cebollín.",
           "precio": 6000,
-          "imagen": "img/gohan-1.jpg",
+          "imagen": "img/gohan/gohan1.png",
           "badge": null
         },
         {
@@ -925,7 +925,7 @@
           "nombre": "Gohan 2 — Pollo",
           "descripcion": "Pollo apanado, queso, palta, cebollín.",
           "precio": 5500,
-          "imagen": "img/gohan-2.jpg",
+          "imagen": "img/gohan/gohan2.png",
           "badge": null
         },
         {
@@ -933,7 +933,7 @@
           "nombre": "Gohan 3 — Salmón",
           "descripcion": "Salmón, queso, palta, cebollín.",
           "precio": 6490,
-          "imagen": "img/gohan-3.jpg",
+          "imagen": "img/gohan/gohan3.png",
           "badge": null
         },
         {
@@ -941,7 +941,7 @@
           "nombre": "Gohan 4 — Kanikama",
           "descripcion": "Kanikama, queso, palta, cebollín.",
           "precio": 5300,
-          "imagen": "img/gohan-4.jpg",
+          "imagen": "img/gohan/gohan4.png",
           "badge": null
         },
         {
@@ -949,7 +949,7 @@
           "nombre": "Gohan 5 — Salmón y Camarón",
           "descripcion": "Salmón, camarón tempura, queso, palta.",
           "precio": 6990,
-          "imagen": "img/gohan-5.jpg",
+          "imagen": "img/gohan/gohan5.png",
           "badge": null
         },
         {
@@ -957,7 +957,7 @@
           "nombre": "Gohan 6 — Pulpo y Salmón",
           "descripcion": "Pulpo, salmón, queso, palta, cebollín.",
           "precio": 7490,
-          "imagen": "img/gohan-6.jpg",
+          "imagen": "img/gohan/gohan6.png",
           "badge": null
         },
         {
@@ -965,7 +965,7 @@
           "nombre": "Gohan 7 — Camarón, Pulpo y Salmón",
           "descripcion": "Camarón tempura, pulpo, salmón, palta.",
           "precio": 7990,
-          "imagen": "img/gohan-7.jpg",
+          "imagen": "img/gohan/gohan7.png",
           "badge": null
         },
         {
@@ -973,7 +973,7 @@
           "nombre": "Gohan 8 — Vegetariano",
           "descripcion": "Champiñón, palmito, palta, cebollín.",
           "precio": 5500,
-          "imagen": "img/gohan-8.jpg",
+          "imagen": "img/gohan/gohan8.png",
           "badge": "Vegetariano"
         },
         {
@@ -981,7 +981,7 @@
           "nombre": "Gohan 9 — Arma tu Gohan",
           "descripcion": "Personalizado con 4 ingredientes a elección.",
           "precio": 8500,
-          "imagen": "img/gohan-9.jpg",
+          "imagen": "img/gohan/gohan9.png",
           "badge": "Nuevo"
         }
       ]
