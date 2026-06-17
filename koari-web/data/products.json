@@ -638,18 +638,27 @@
       "productos": [
         {
           "id": "veg-01",
-          "nombre": "Palmito, palta, cebollín o palta",
+          "nombre": "Palmito, queso, cebollín o palta",
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg1.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         },
         {
           "id": "veg-02",
@@ -657,104 +666,167 @@
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg2.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         },
         {
           "id": "veg-03",
-          "nombre": "Choclo, queso, cebollín",
+          "nombre": "Choclo, queso, cebollín o palta",
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg3.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         },
         {
           "id": "veg-04",
-          "nombre": "Pepino, pimentón, queso",
+          "nombre": "Pepino, pimentón, queso, cebollín o palta",
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg4.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         },
         {
           "id": "veg-05",
-          "nombre": "Pimentón, queso, palta",
+          "nombre": "Pimentón, queso, cebollín o palta",
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg5.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         },
         {
           "id": "veg-06",
-          "nombre": "Champiñón, choclo, queso",
+          "nombre": "Champiñón, choclo, queso, cebollín o palta",
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg6.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         },
         {
           "id": "veg-07",
-          "nombre": "Zapallito apanado, queso, cebollín",
+          "nombre": "Zapallito apanado, queso, cebollín o palta",
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg7.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         },
         {
           "id": "veg-08",
-          "nombre": "Palmito, choclo, queso",
+          "nombre": "Palmito, choclo, queso, cebollín o palta",
           "descripcion": "Roll de 10 piezas · el precio depende de la envoltura que elijas.",
           "imagen": "img/veg/veg8.png",
           "badge": "Vegetariano",
-          "variaciones": {
-            "etiqueta": "Envoltura",
-            "opciones": [
-              { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
-              { "id": "palta", "nombre": "Palta", "precio": 5000 },
-              { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
-            ]
-          }
+          "variaciones": [
+            {
+              "etiqueta": "Complemento",
+              "opciones": [
+                { "id": "cebollin", "nombre": "Cebollín", "precio": 0 },
+                { "id": "palta", "nombre": "Palta", "precio": 0 }
+              ]
+            },
+            {
+              "etiqueta": "Envoltura",
+              "opciones": [
+                { "id": "cibo-sesamo", "nombre": "Ciboulette o Sésamo", "precio": 4500 },
+                { "id": "palta", "nombre": "Palta", "precio": 5000 },
+                { "id": "queso", "nombre": "Queso crema", "precio": 5500 }
+              ]
+            }
+          ]
         }
       ]
     },
