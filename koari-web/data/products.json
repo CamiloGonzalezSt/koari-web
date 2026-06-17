@@ -39,7 +39,7 @@
           "nombre": "Promo 1 — 20 Piezas",
           "descripcion": "10 Pollo, queso, cebollín (Panko) · 10 Kanikama, palta (Env. Sésamo)",
           "precio": 7500,
-          "imagen": "img/promo-1.jpg",
+          "imagen": "img/promociones/promo1.png",
           "badge": null
         },
         {
@@ -47,7 +47,7 @@
           "nombre": "Promo 2 — 20 Piezas Mix",
           "descripcion": "5 Pollo, queso, cebollín (Panko) · 5 Kanikama, queso, cebollín (Tempura) · 5 Salmón, queso (Env. Palta) · 5 Kanikama, palta (Env. Sésamo)",
           "precio": 9000,
-          "imagen": "img/promo-2.jpg",
+          "imagen": "img/promociones/promo2.png",
           "badge": null
         },
         {
@@ -55,7 +55,7 @@
           "nombre": "Promo 3 — 36 Piezas Mix",
           "descripcion": "10 Pollo, queso, cebollín (Panko) · 10 Kanikama, palta (Env. Ciboulette) · 10 Camarón, queso, cebollín (Env. Palta) · 5 Poke ball · 1 Bebida 350ml",
           "precio": 12500,
-          "imagen": "img/promo-3.jpg",
+          "imagen": "img/promociones/promo3.png",
           "badge": null
         },
         {
