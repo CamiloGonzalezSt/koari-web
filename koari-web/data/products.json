@@ -840,7 +840,7 @@
           "nombre": "Sushi Burger — Pollo",
           "descripcion": "Pollo, queso crema, palta, cebollín.",
           "precio": 7300,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer1.png",
           "badge": null
         },
         {
@@ -848,7 +848,7 @@
           "nombre": "Sushi Burger — Kanikama",
           "descripcion": "Kanikama, queso, palta, cebollín.",
           "precio": 7000,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer2.png",
           "badge": null
         },
         {
@@ -856,7 +856,7 @@
           "nombre": "Sushi Burger — Camarón Tempura",
           "descripcion": "Camarón tempura, queso, palta, cebollín.",
           "precio": 7500,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer1.png",
           "badge": null
         },
         {
@@ -864,7 +864,7 @@
           "nombre": "Sushi Burger — Salmón",
           "descripcion": "Salmón, queso, palta, cebollín.",
           "precio": 8000,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer1.png",
           "badge": null
         },
         {
@@ -872,7 +872,7 @@
           "nombre": "Sushi Burger — Salmón y Camarón",
           "descripcion": "Salmón, camarón tempura, queso, palta.",
           "precio": 8490,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer1.png",
           "badge": null
         },
         {
@@ -880,7 +880,7 @@
           "nombre": "Sushi Burger — Carne",
           "descripcion": "Carne salteada, queso, palta, cebollín.",
           "precio": 7990,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer1.png",
           "badge": null
         },
         {
@@ -888,7 +888,7 @@
           "nombre": "Sushi Burger — Calamar",
           "descripcion": "Calamar apanado, queso, palta, cebollín.",
           "precio": 7490,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer1.png",
           "badge": null
         },
         {
@@ -896,7 +896,7 @@
           "nombre": "Sushi Burger — Champiñón",
           "descripcion": "Champiñón tempura, queso, palta, cebollín.",
           "precio": 7000,
-          "imagen": "img/burger/burguer1.png",
+          "imagen": "img/burguer/burguer1.png",
           "badge": "Vegetariano"
         }
       ]
