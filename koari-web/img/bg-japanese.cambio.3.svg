@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#d4c070" stop-opacity="0.45"/>
+      <stop offset="60%"  stop-color="#d4c070" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#d4c070" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moonFill" cx="38%" cy="35%" r="65%">
+      <stop offset="0%"   stop-color="#ece0a8"/>
+      <stop offset="100%" stop-color="#b0a060"/>
+    </radialGradient>
+    <linearGradient id="skyFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#0d0d0d"/>
+      <stop offset="70%"  stop-color="#100810"/>
+      <stop offset="100%" stop-color="#1a0810"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky gradient background -->
+  <rect width="1920" height="1080" fill="url(#skyFade)"/>
+
+  <!-- Moon halo -->
+  <circle cx="1640" cy="165" r="280" fill="url(#moonGlow)"/>
+  <!-- Moon disk — clearly visible -->
+  <circle cx="1640" cy="165" r="92"  fill="url(#moonFill)" opacity="0.55"/>
+  <circle cx="1640" cy="165" r="92"  fill="none" stroke="#d4c070" stroke-width="1" opacity="0.25"/>
+
+  <!-- Stars -->
+  <circle cx="200"  cy="80"  r="1.5" fill="#d4c890" opacity="0.7"/>
+  <circle cx="450"  cy="55"  r="1.2" fill="#d4c890" opacity="0.6"/>
+  <circle cx="700"  cy="120" r="1.3" fill="#d4c890" opacity="0.55"/>
+  <circle cx="950"  cy="45"  r="1.4" fill="#d4c890" opacity="0.65"/>
+  <circle cx="1200" cy="90"  r="1.0" fill="#d4c890" opacity="0.5"/>
+  <circle cx="350"  cy="200" r="1.2" fill="#d4c890" opacity="0.45"/>
+  <circle cx="1050" cy="160" r="1.5" fill="#d4c890" opacity="0.55"/>
+  <circle cx="550"  cy="310" r="1.0" fill="#d4c890" opacity="0.35"/>
+  <circle cx="1750" cy="300" r="1.3" fill="#d4c890" opacity="0.45"/>
+  <circle cx="80"   cy="350" r="1.0" fill="#d4c890" opacity="0.38"/>
+  <circle cx="860"  cy="250" r="1.3" fill="#d4c890" opacity="0.42"/>
+  <circle cx="1450" cy="65"  r="1.1" fill="#d4c890" opacity="0.58"/>
+  <circle cx="1300" cy="200" r="0.9" fill="#d4c890" opacity="0.38"/>
+
+  <!-- Mount Fuji — dark navy, clearly visible against sky -->
+  <path d="M 420,1080 L 960,500 L 1500,1080 Z" fill="#12121e"/>
+  <!-- Snow cap -->
+  <path d="M 875,565 L 960,500 L 1045,565
+           L 1028,582 L 1010,572 L 990,584 L 970,578 L 960,582
+           L 950,578 L 930,584 L 910,572 L 892,582 Z"
+        fill="#26263a"/>
+
+  <!-- Sakura branch — left, clearly visible dark maroon -->
+  <path d="M -20,940 Q 130,800 240,690 Q 340,590 410,510"
+        fill="none" stroke="#5a1828" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 200,740 Q 270,675 320,645"
+        fill="none" stroke="#5a1828" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M 320,645 Q 365,605 400,582"
+        fill="none" stroke="#5a1828" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 255,695 Q 225,650 232,608"
+        fill="none" stroke="#5a1828" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 340,594 Q 308,552 318,510"
+        fill="none" stroke="#5a1828" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Sakura flowers — left branch -->
+  <!-- Flower A (400,510) -->
+  <g transform="translate(410,508)">
+    <g transform="rotate(0)">  <ellipse ry="12" rx="5.5" cy="-8" fill="#8a2840"/></g>
+    <g transform="rotate(72)"> <ellipse ry="12" rx="5.5" cy="-8" fill="#8a2840"/></g>
+    <g transform="rotate(144)"><ellipse ry="12" rx="5.5" cy="-8" fill="#8a2840"/></g>
+    <g transform="rotate(216)"><ellipse ry="12" rx="5.5" cy="-8" fill="#8a2840"/></g>
+    <g transform="rotate(288)"><ellipse ry="12" rx="5.5" cy="-8" fill="#8a2840"/></g>
+    <circle r="4" fill="#4a1020"/>
+  </g>
+  <!-- Flower B (318,510) -->
+  <g transform="translate(318,508)">
+    <g transform="rotate(15)"> <ellipse ry="10" rx="4.5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(87)"> <ellipse ry="10" rx="4.5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(159)"><ellipse ry="10" rx="4.5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(231)"><ellipse ry="10" rx="4.5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(303)"><ellipse ry="10" rx="4.5" cy="-7" fill="#8a2840"/></g>
+    <circle r="3" fill="#4a1020"/>
+  </g>
+  <!-- Flower C (320,645) -->
+  <g transform="translate(320,643)">
+    <g transform="rotate(0)">  <ellipse ry="11" rx="5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(72)"> <ellipse ry="11" rx="5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(144)"><ellipse ry="11" rx="5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(216)"><ellipse ry="11" rx="5" cy="-7" fill="#8a2840"/></g>
+    <g transform="rotate(288)"><ellipse ry="11" rx="5" cy="-7" fill="#8a2840"/></g>
+    <circle r="3.5" fill="#4a1020"/>
+  </g>
+  <!-- Flower D (232,608) small -->
+  <g transform="translate(232,606)">
+    <g transform="rotate(25)"> <ellipse ry="8" rx="3.5" cy="-5" fill="#7a2438"/></g>
+    <g transform="rotate(97)"> <ellipse ry="8" rx="3.5" cy="-5" fill="#7a2438"/></g>
+    <g transform="rotate(169)"><ellipse ry="8" rx="3.5" cy="-5" fill="#7a2438"/></g>
+    <g transform="rotate(241)"><ellipse ry="8" rx="3.5" cy="-5" fill="#7a2438"/></g>
+    <g transform="rotate(313)"><ellipse ry="8" rx="3.5" cy="-5" fill="#7a2438"/></g>
+    <circle r="2.5" fill="#4a1020"/>
+  </g>
+
+  <!-- Sakura branch — right upper -->
+  <path d="M 1930,320 Q 1800,275 1720,230"
+        fill="none" stroke="#5a1828" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 1760,298 Q 1730,258 1722,218"
+        fill="none" stroke="#5a1828" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Flowers right branch -->
+  <g transform="translate(1720,228)">
+    <g transform="rotate(0)">  <ellipse ry="11" rx="5" cy="-7" fill="#8a2840" opacity="0.85"/></g>
+    <g transform="rotate(72)"> <ellipse ry="11" rx="5" cy="-7" fill="#8a2840" opacity="0.85"/></g>
+    <g transform="rotate(144)"><ellipse ry="11" rx="5" cy="-7" fill="#8a2840" opacity="0.85"/></g>
+    <g transform="rotate(216)"><ellipse ry="11" rx="5" cy="-7" fill="#8a2840" opacity="0.85"/></g>
+    <g transform="rotate(288)"><ellipse ry="11" rx="5" cy="-7" fill="#8a2840" opacity="0.85"/></g>
+    <circle r="3.5" fill="#4a1020"/>
+  </g>
+  <g transform="translate(1722,216)">
+    <g transform="rotate(30)"> <ellipse ry="9" rx="4" cy="-6" fill="#7a2438" opacity="0.75"/></g>
+    <g transform="rotate(102)"><ellipse ry="9" rx="4" cy="-6" fill="#7a2438" opacity="0.75"/></g>
+    <g transform="rotate(174)"><ellipse ry="9" rx="4" cy="-6" fill="#7a2438" opacity="0.75"/></g>
+    <g transform="rotate(246)"><ellipse ry="9" rx="4" cy="-6" fill="#7a2438" opacity="0.75"/></g>
+    <g transform="rotate(318)"><ellipse ry="9" rx="4" cy="-6" fill="#7a2438" opacity="0.75"/></g>
+    <circle r="3" fill="#4a1020"/>
+  </g>
+
+  <!-- Falling petals (scattered single petals) -->
+  <ellipse cx="520"  cy="310" rx="4" ry="9"  fill="#8a2840" opacity="0.6"  transform="rotate(-35,520,310)"/>
+  <ellipse cx="780"  cy="190" rx="3.5" ry="8" fill="#8a2840" opacity="0.5" transform="rotate(20,780,190)"/>
+  <ellipse cx="640"  cy="470" rx="3"   ry="7" fill="#7a2438" opacity="0.45" transform="rotate(-55,640,470)"/>
+  <ellipse cx="1080" cy="290" rx="4"   ry="9" fill="#8a2840" opacity="0.4"  transform="rotate(40,1080,290)"/>
+  <ellipse cx="1340" cy="430" rx="3.5" ry="8" fill="#7a2438" opacity="0.35" transform="rotate(-20,1340,430)"/>
+  <ellipse cx="890"  cy="390" rx="3"   ry="7" fill="#8a2840" opacity="0.4"  transform="rotate(60,890,390)"/>
+  <ellipse cx="200"  cy="490" rx="3.5" ry="8" fill="#7a2438" opacity="0.45" transform="rotate(25,200,490)"/>
+  <ellipse cx="1480" cy="360" rx="3"   ry="7" fill="#8a2840" opacity="0.30" transform="rotate(-45,1480,360)"/>
+
+  <!-- Japanese waves — clearly visible -->
+  <path d="M 0,950  Q 96,928 192,950  Q 288,972 384,950  Q 480,928 576,950  Q 672,972 768,950  Q 864,928 960,950  Q 1056,972 1152,950 Q 1248,928 1344,950 Q 1440,972 1536,950 Q 1632,928 1728,950 Q 1824,972 1920,950"
+        fill="none" stroke="#6a1828" stroke-width="2.2"/>
+  <path d="M 0,972  Q 96,950 192,972  Q 288,994 384,972  Q 480,950 576,972  Q 672,994 768,972  Q 864,950 960,972  Q 1056,994 1152,972 Q 1248,950 1344,972 Q 1440,994 1536,972 Q 1632,950 1728,972 Q 1824,994 1920,972"
+        fill="none" stroke="#5a1420" stroke-width="1.8"/>
+  <path d="M 0,994  Q 96,972 192,994  Q 288,1016 384,994  Q 480,972 576,994  Q 672,1016 768,994  Q 864,972 960,994  Q 1056,1016 1152,994 Q 1248,972 1344,994 Q 1440,1016 1536,994 Q 1632,972 1728,994 Q 1824,1016 1920,994"
+        fill="none" stroke="#4a1018" stroke-width="1.4"/>
+</svg>
