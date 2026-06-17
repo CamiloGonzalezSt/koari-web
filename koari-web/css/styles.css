@@ -1220,6 +1220,8 @@ header, nav, main, aside, footer, .hero, .overlay {
 
 /* Selector de variaciones (envoltura) dentro del modal */
 .modal-variaciones { margin-bottom: 18px; }
+.modal-variaciones__dimension { margin-bottom: 18px; }
+.modal-variaciones__dimension:last-child { margin-bottom: 0; }
 
 .modal-variaciones__label {
   font-family: 'Oswald', sans-serif;

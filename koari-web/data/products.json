@@ -231,7 +231,7 @@
                                                                                           },
                                                                                           {
                                                                                               "nombre":  "Palta",
-                                                                                              "precio":  800,
+                                                                                              "precio":  0,
                                                                                               "id":  "palta"
                                                                                           }
                                                                                       ],
@@ -285,7 +285,7 @@
                                                                                           },
                                                                                           {
                                                                                               "nombre":  "Palta",
-                                                                                              "precio":  800,
+                                                                                              "precio":  0,
                                                                                               "id":  "palta"
                                                                                           }
                                                                                       ],
@@ -339,7 +339,7 @@
                                                                                           },
                                                                                           {
                                                                                               "nombre":  "Palta",
-                                                                                              "precio":  800,
+                                                                                              "precio":  0,
                                                                                               "id":  "palta"
                                                                                           }
                                                                                       ],
@@ -393,7 +393,7 @@
                                                                                           },
                                                                                           {
                                                                                               "nombre":  "Palta",
-                                                                                              "precio":  800,
+                                                                                              "precio":  0,
                                                                                               "id":  "palta"
                                                                                           }
                                                                                       ],
@@ -447,7 +447,7 @@
                                                                                           },
                                                                                           {
                                                                                               "nombre":  "Palta",
-                                                                                              "precio":  800,
+                                                                                              "precio":  0,
                                                                                               "id":  "palta"
                                                                                           }
                                                                                       ],
@@ -501,7 +501,7 @@
                                                                                           },
                                                                                           {
                                                                                               "nombre":  "Palta",
-                                                                                              "precio":  800,
+                                                                                              "precio":  0,
                                                                                               "id":  "palta"
                                                                                           }
                                                                                       ],
@@ -1759,3 +1759,4 @@
                        }
                    ]
 }
+

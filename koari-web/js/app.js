@@ -440,7 +440,7 @@ function renderModalVariaciones(producto) {
           ${dimension.opciones.map((o, optIndex) => `
             <button class="variacion-btn${optIndex === 0 ? ' activa' : ''}" data-dim="${dimIndex}" data-opt="${optIndex}">
               <span>${o.nombre}</span>
-              <strong>${formatearPrecio(o.precio)}</strong>
+              <strong>${o.precio === 0 ? 'Incluido' : formatearPrecio(o.precio)}</strong>
             </button>`).join('')}
         </div>
       </div>
