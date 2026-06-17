@@ -1385,6 +1385,61 @@
           "badge": null
         }
       ]
+    },
+    {
+      "id": "salsas",
+      "nombre": "Salsas",
+      "icono": "🫙",
+      "productos": [
+        {
+          "id": "salsa-soya",
+          "nombre": "Salsa Soya",
+          "descripcion": "Incluida en el pedido.",
+          "precio": 0,
+          "imagen": null,
+          "badge": "Incluido"
+        },
+        {
+          "id": "salsa-teriyaki",
+          "nombre": "Salsa Teriyaki",
+          "descripcion": "Incluida en el pedido.",
+          "precio": 0,
+          "imagen": null,
+          "badge": "Incluido"
+        },
+        {
+          "id": "salsa-acevichado",
+          "nombre": "Salsa Acevichado",
+          "descripcion": "Salsa de la casa.",
+          "precio": 1200,
+          "imagen": null,
+          "badge": null
+        },
+        {
+          "id": "salsa-maracuya",
+          "nombre": "Salsa Maracuyá",
+          "descripcion": "Salsa de la casa.",
+          "precio": 1200,
+          "imagen": null,
+          "badge": null
+        },
+        {
+          "id": "salsa-tamarindo",
+          "nombre": "Salsa Tamarindo",
+          "descripcion": "Salsa de la casa.",
+          "precio": 1200,
+          "imagen": null,
+          "badge": null
+        },
+        {
+          "id": "salsa-huancaina",
+          "nombre": "Salsa Huancaína",
+          "descripcion": "Salsa de la casa.",
+          "precio": 1200,
+          "imagen": null,
+          "badge": null
+        }
+      ]
     }
   ]
 }

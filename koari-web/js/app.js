@@ -144,7 +144,9 @@ function precioMinimo(p) {
 
 function precioCardTexto(p) {
   if (p.armaTuRoll) return formatearPrecio(p.precio);
-  return tieneVariaciones(p) ? `desde ${formatearPrecio(precioMinimo(p))}` : formatearPrecio(p.precio);
+  if (tieneVariaciones(p)) return `desde ${formatearPrecio(precioMinimo(p))}`;
+  if (p.precio === 0) return 'Incluido';
+  return formatearPrecio(p.precio);
 }
 
 // Construye un producto concreto a partir de la(s) variación(es) elegida(s).
