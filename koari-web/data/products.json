@@ -1082,7 +1082,7 @@
           "nombre": "Futomaki Kanikama",
           "descripcion": "10 piezas · kanikama, queso, palta.",
           "precio": 3000,
-          "imagen": "img/futomaki.jpg",
+          "imagen": "img/futomaki/futomaki2.png",
           "badge": null
         },
         {
@@ -1090,7 +1090,7 @@
           "nombre": "Futomaki Camarón",
           "descripcion": "10 piezas · camarón, queso, cebollín.",
           "precio": 3300,
-          "imagen": "img/futomaki.jpg",
+          "imagen": "img/futomaki/futomaki3.png",
           "badge": null
         },
         {
@@ -1098,7 +1098,7 @@
           "nombre": "Futomaki Salmón",
           "descripcion": "10 piezas · salmón, palta, queso.",
           "precio": 3500,
-          "imagen": "img/futomaki.jpg",
+          "imagen": "img/futomaki/futomaki4.png",
           "badge": null
         },
         {
@@ -1106,7 +1106,7 @@
           "nombre": "Futomaki Pulpo",
           "descripcion": "10 piezas · pulpo, queso, palta.",
           "precio": 3600,
-          "imagen": "img/futomaki.jpg",
+          "imagen": "img/futomaki/futomaki5.png",
           "badge": null
         }
       ]
@@ -1121,7 +1121,7 @@
           "nombre": "Nigiri de Kanikama",
           "descripcion": "2 unidades.",
           "precio": 2300,
-          "imagen": "img/nigiris.jpg",
+          "imagen": "img/nigiris/nigiri1.png",
           "badge": null
         },
         {
@@ -1129,7 +1129,7 @@
           "nombre": "Nigiri de Camarón Cocido",
           "descripcion": "2 unidades.",
           "precio": 2500,
-          "imagen": "img/nigiris.jpg",
+          "imagen": "img/nigiris/nigiri2.png",
           "badge": null
         },
         {
@@ -1137,7 +1137,7 @@
           "nombre": "Nigiri de Salmón",
           "descripcion": "2 unidades.",
           "precio": 2700,
-          "imagen": "img/nigiris.jpg",
+          "imagen": "img/nigiris/nigiri3.png",
           "badge": null
         },
         {
@@ -1145,7 +1145,7 @@
           "nombre": "Nigiri de Pulpo",
           "descripcion": "2 unidades.",
           "precio": 2800,
-          "imagen": "img/nigiris.jpg",
+          "imagen": "img/nigiris/nigiri4.png",
           "badge": null
         }
       ]
@@ -1160,7 +1160,7 @@
           "nombre": "Gyosas de Pollo",
           "descripcion": "5 unidades.",
           "precio": 3500,
-          "imagen": "img/gyosas.jpg",
+          "imagen": "img/yosas/yosa1.png",
           "badge": null
         },
         {
@@ -1168,7 +1168,7 @@
           "nombre": "Gyosas de Verduras",
           "descripcion": "5 unidades.",
           "precio": 3500,
-          "imagen": "img/gyosas.jpg",
+          "imagen": "img/yosas/yosa2.png",
           "badge": "Vegetariano"
         },
         {
@@ -1176,7 +1176,7 @@
           "nombre": "Gyosas de Cerdo",
           "descripcion": "5 unidades.",
           "precio": 3700,
-          "imagen": "img/gyosas.jpg",
+          "imagen": "img/yosas/yosa3.png",
           "badge": null
         },
         {
@@ -1184,7 +1184,7 @@
           "nombre": "Gyosas de Camarón",
           "descripcion": "5 unidades.",
           "precio": 4000,
-          "imagen": "img/gyosas.jpg",
+          "imagen": "img/yosas/yosa4.png",
           "badge": null
         }
       ]
@@ -1199,7 +1199,7 @@
           "nombre": "Hand Roll de Pollo",
           "descripcion": "Pollo, queso, cebollín.",
           "precio": 3000,
-          "imagen": "img/hand-roll.jpg",
+          "imagen": "img/handroll/hand1.png",
           "badge": null
         },
         {
@@ -1207,7 +1207,7 @@
           "nombre": "Hand Roll de Kanikama",
           "descripcion": "Kanikama, queso, cebollín.",
           "precio": 3000,
-          "imagen": "img/hand-roll.jpg",
+          "imagen": "img/handroll/hand2.png",
           "badge": null
         },
         {
@@ -1215,7 +1215,7 @@
           "nombre": "Hand Roll de Champiñón",
           "descripcion": "Champiñón, queso, cebollín.",
           "precio": 3000,
-          "imagen": "img/hand-roll.jpg",
+          "imagen": "img/handroll/hand3.png",
           "badge": "Vegetariano"
         },
         {
@@ -1223,7 +1223,7 @@
           "nombre": "Hand Roll de Camarón",
           "descripcion": "Camarón, queso, cebollín.",
           "precio": 3500,
-          "imagen": "img/hand-roll.jpg",
+          "imagen": "img/handroll/hand4.png",
           "badge": null
         },
         {
@@ -1231,7 +1231,7 @@
           "nombre": "Hand Roll de Salmón",
           "descripcion": "Salmón, queso, cebollín.",
           "precio": 3500,
-          "imagen": "img/hand-roll.jpg",
+          "imagen": "img/handroll/hand5.png",
           "badge": null
         }
       ]
@@ -1246,7 +1246,7 @@
           "nombre": "Papas Fritas Chica",
           "descripcion": "Porción individual.",
           "precio": 2500,
-          "imagen": "img/papas.jpg",
+          "imagen": "img/compartir/papa1.png",
           "badge": null
         },
         {
@@ -1254,7 +1254,7 @@
           "nombre": "Papas Fritas Mediana",
           "descripcion": "Para compartir.",
           "precio": 3500,
-          "imagen": "img/papas.jpg",
+          "imagen": "img/compartir/papa2.png",
           "badge": null
         },
         {
@@ -1262,7 +1262,7 @@
           "nombre": "Poke Ball",
           "descripcion": "10 unidades.",
           "precio": 3500,
-          "imagen": "img/pokeball.jpg",
+          "imagen": "img/compartir/balls.png",
           "badge": null
         },
         {
@@ -1270,7 +1270,7 @@
           "nombre": "Arrollado Primavera",
           "descripcion": "5 unidades.",
           "precio": 4000,
-          "imagen": "img/primavera.jpg",
+          "imagen": "img/compartir/arrollado.png",
           "badge": null
         },
         {
@@ -1278,7 +1278,7 @@
           "nombre": "Papas Fritas Grande",
           "descripcion": "Para toda la mesa.",
           "precio": 4500,
-          "imagen": "img/papas.jpg",
+          "imagen": "img/compartir/papa3.png",
           "badge": null
         },
         {
@@ -1286,7 +1286,7 @@
           "nombre": "Arrollado Jamón Queso",
           "descripcion": "5 unidades.",
           "precio": 4500,
-          "imagen": "img/jamon-queso.jpg",
+          "imagen": "img/compartir/arrollado2.png",
           "badge": null
         },
         {
@@ -1294,7 +1294,7 @@
           "nombre": "Pollo Apanado",
           "descripcion": "5 unidades.",
           "precio": 5000,
-          "imagen": "img/pollo-apanado.jpg",
+          "imagen": "img/compartir/pollo.png",
           "badge": null
         },
         {
@@ -1302,7 +1302,7 @@
           "nombre": "Empanadas de Queso",
           "descripcion": "5 unidades.",
           "precio": 5500,
-          "imagen": "img/empanadas.jpg",
+          "imagen": "img/compartir/empanada.png",
           "badge": null
         },
         {
@@ -1310,7 +1310,7 @@
           "nombre": "Salchipapas",
           "descripcion": "Papas con vienesa.",
           "precio": 5500,
-          "imagen": "img/salchipapas.jpg",
+          "imagen": "img/compartir/salchipapa.png",
           "badge": null
         },
         {
@@ -1318,7 +1318,7 @@
           "nombre": "Calamar Apanado",
           "descripcion": "15 unidades.",
           "precio": 6500,
-          "imagen": "img/calamar.jpg",
+          "imagen": "img/compartir/calamar.png ",
           "badge": null
         },
         {
@@ -1326,7 +1326,7 @@
           "nombre": "Camarón Tempura",
           "descripcion": "5 unidades.",
           "precio": 6500,
-          "imagen": "img/camaron-tempura.jpg",
+          "imagen": "img/compartir/camaron.png",
           "badge": null
         },
         {
@@ -1334,7 +1334,7 @@
           "nombre": "Camarón Apanado",
           "descripcion": "6 unidades.",
           "precio": 7000,
-          "imagen": "img/camaron-apanado.jpg",
+          "imagen": "img/compartir/camaron2.png",
           "badge": null
         }
       ]
@@ -1349,7 +1349,7 @@
           "nombre": "Lata 350cc",
           "descripcion": "Bebida en lata.",
           "precio": 1500,
-          "imagen": "img/bebida-lata.jpg",
+          "imagen": "img/bebidas/lata.png",
           "badge": null
         },
         {
@@ -1357,7 +1357,7 @@
           "nombre": "Agua 1 Litro",
           "descripcion": "Con o sin gas.",
           "precio": 1500,
-          "imagen": "img/agua.jpg",
+          "imagen": "img/bebidas/agua.png",
           "badge": null
         },
         {
@@ -1365,7 +1365,7 @@
           "nombre": "Score 473ml",
           "descripcion": "Bebida energética.",
           "precio": 1800,
-          "imagen": "img/score.jpg",
+          "imagen": "img/bebidas/score.png",
           "badge": null
         },
         {
@@ -1373,7 +1373,7 @@
           "nombre": "Jugo 1.5 Litros",
           "descripcion": "Para compartir.",
           "precio": 2200,
-          "imagen": "img/jugo.jpg",
+          "imagen": "img/bebidas/jugo.png",
           "badge": null
         },
         {
@@ -1381,7 +1381,7 @@
           "nombre": "Bebida 1.5 Litros",
           "descripcion": "Para toda la mesa.",
           "precio": 2500,
-          "imagen": "img/bebida-familiar.jpg",
+          "imagen": "img/bebidas/bebida.png",
           "badge": null
         }
       ]
@@ -1396,7 +1396,7 @@
           "nombre": "Salsa Soya",
           "descripcion": "Incluida en el pedido.",
           "precio": 0,
-          "imagen": null,
+          "imagen": "img/salsas/soya.png",
           "badge": "Incluido"
         },
         {
@@ -1404,7 +1404,7 @@
           "nombre": "Salsa Teriyaki",
           "descripcion": "Incluida en el pedido.",
           "precio": 0,
-          "imagen": null,
+          "imagen": "img/salsas/teriyaki.png",
           "badge": "Incluido"
         },
         {
@@ -1412,7 +1412,7 @@
           "nombre": "Salsa Acevichado",
           "descripcion": "Salsa de la casa.",
           "precio": 1200,
-          "imagen": null,
+          "imagen": "img/salsas/acevichada.png",
           "badge": null
         },
         {
@@ -1420,7 +1420,7 @@
           "nombre": "Salsa Maracuyá",
           "descripcion": "Salsa de la casa.",
           "precio": 1200,
-          "imagen": null,
+          "imagen": "img/salsas/maracuya.png",
           "badge": null
         },
         {
@@ -1428,7 +1428,7 @@
           "nombre": "Salsa Tamarindo",
           "descripcion": "Salsa de la casa.",
           "precio": 1200,
-          "imagen": null,
+          "imagen": "img/salsas/tamarindo.png",
           "badge": null
         },
         {
@@ -1436,7 +1436,7 @@
           "nombre": "Salsa Huancaína",
           "descripcion": "Salsa de la casa.",
           "precio": 1200,
-          "imagen": null,
+          "imagen": "img/salsas/huancaina.png",
           "badge": null
         }
       ]
