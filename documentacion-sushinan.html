@@ -444,17 +444,44 @@ code{font-family:"SF Mono",Consolas,monospace;font-size:12px;background:#f0f0ec;
 
 /* ── PRINT ── */
 @media print{
-  body{max-width:100%;padding:20px 28px;font-size:13px}
-  .portada{padding:30px 0}
-  section{page-break-inside:avoid}
-  section h2{page-break-before:always}
-  section:first-of-type h2{page-break-before:avoid}
-  .indice{page-break-after:always}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{max-width:100%;padding:14px 20px;font-size:12px;line-height:1.6}
+
+  /* Portada compacta, sin salto forzado */
+  .portada{padding:20px 0 16px;margin-bottom:20px}
+
+  /* Índice sin salto forzado */
+  .indice{margin-bottom:20px}
+
+  /* Secciones fluyen libremente */
+  section{margin-bottom:24px}
+
+  /* Evitar cortes dentro de cards, tablas, callouts y pasos */
+  .card,.callout,.pasos li,.bloque-codigo,table,tr{page-break-inside:avoid}
+  h2,h3,h4{page-break-after:avoid}
+
+  /* Links sin decoración */
   a{color:inherit;text-decoration:none}
-  .bloque-codigo{background:#f5f5f2;color:#333;border:1px solid #ccc}
+
+  /* Código con fondo claro legible */
+  .bloque-codigo{background:#f5f5f2!important;color:#222!important;border:1px solid #ccc;font-size:11px}
+  code{background:#f0f0ec!important;color:#c0392b!important;border:1px solid #ddd}
+
+  /* Grids a columna única para que no se achiquen */
   .grid2,.grid3{grid-template-columns:1fr}
-  .screens-row{flex-direction:column}
-  .desktop-frame{min-width:unset}
+  .indice-grid{grid-template-columns:1fr 1fr}
+
+  /* Mockups: mostrar en columna, tamaño reducido */
+  .screens-row{display:flex;flex-direction:column;gap:16px}
+  .phone-frame{flex:none;width:180px;margin:0 auto}
+  .phone-screen{height:320px}
+  .desktop-frame{min-width:unset;width:100%}
+
+  /* Chips y badges con borde */
+  .chip,.badge{border:1px solid #aaa}
+
+  /* Cards con borde izquierdo visible */
+  .card-rojo,.card-verde,.card-azul,.card-naranja,.card-wsp{background:#fafafa!important}
 }
 @media(max-width:640px){
   body{padding:24px 16px}
