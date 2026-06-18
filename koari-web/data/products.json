@@ -1,6 +1,7 @@
 {
   "negocio": {
     "nombre": "Sushi Nan",
+    "catalogo_version": 1,
     "tagline": "El sabor que prende fuego",
     "telefono_whatsapp": "56936413434",
     "telefono_display": "+56 9 3641 3434",
@@ -17,8 +18,19 @@
     "modalidades": "Retiro en local · Delivery",
     "zonas_cobertura": "Recoleta, Conchalí, Huechuraba, Independencia",
     "horario": "Lun–Jue 12:15–23:30 · Vie–Sáb 12:15–23:45 · Dom solo reservas previas",
-    "instagram": "https://www.instagram.com/sushinan",
-    "facebook": "https://www.facebook.com/sushinan",
+    "tiempo_estimado": "45–60 minutos",
+    "pedido_minimo": 0,
+    "envio_gratis_desde": 0,
+    "horarios_pedido": {
+      "1": ["12:15", "23:30"],
+      "2": ["12:15", "23:30"],
+      "3": ["12:15", "23:30"],
+      "4": ["12:15", "23:30"],
+      "5": ["12:15", "23:45"],
+      "6": ["12:15", "23:45"]
+    },
+    "instagram": "https://www.instagram.com/sushinan.s.centro/",
+    "facebook": "https://www.facebook.com/www.sushinan.cl",
     "costos_envio": {
       "Recoleta": 1500,
       "Conchalí": 2500,
@@ -26,12 +38,12 @@
       "Independencia": 2500
     },
     "pago_transferencia": {
-      "banco": "COMPLETAR BANCO",
-      "tipo_cuenta": "Cuenta Rut",
-      "numero_cuenta": "COMPLETAR NÚMERO",
-      "titular": "COMPLETAR TITULAR",
-      "rut": "COMPLETAR RUT",
-      "email": "sushinan.s.centro@gmail.com"
+      "banco": "Banco Santander",
+      "tipo_cuenta": "Cuenta corriente",
+      "numero_cuenta": "000080588330",
+      "titular": "Yovana lliuyacc",
+      "rut": "24.760.725-0",
+      "email": "Sushinan.s.centro@gmail.com"
     }
   },
   "categorias": [
@@ -140,7 +152,7 @@
           "id": "promo-13",
           "nombre": "Promo 13 — 100 Piezas VIP",
           "descripcion": "10 Pollo apanado, queso, cebollín (Panko) · 10 Kanikama, queso, cebollín (Tempura) · 10 Champiñón, queso, cebollín (Tempura) · 10 Camarón tempura, queso, cebollín (Palta) · 10 Pollo apanado, queso, cebollín (Salmón) · 10 Camarón tempura, queso, palta (Sésamo) · 10 Palmito, palta (Queso) · 10 Kanikama, queso, palta (Ciboulette) · 10 Hosomaki de queso, palta · 5 Gyosas a elección · 5 Tori panko",
-          "precio": 16990,
+          "precio": 28490,
           "imagen": "img/promociones/promo13.png",
           "badge": "Ofertón"
         },
@@ -148,7 +160,7 @@
           "id": "promo-nan-60",
           "nombre": "Promo Nan — 60 Piezas",
           "descripcion": "10 Pollo, queso, cebollín (Panko) · 10 Kanikama, queso, cebollín (Panko) · 10 Camarón, queso (Env. Palta) · 10 Pollo, palta (Env. Queso) · 10 Camarón, queso (Env. Sésamo) · 10 Kanikama, queso, palta (Ciboulette)",
-          "precio": 15000,
+          "precio": 16000,
           "imagen": "img/promociones/promonan.png",
           "badge": "Popular"
         },

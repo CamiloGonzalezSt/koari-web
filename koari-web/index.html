@@ -5,11 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sushi Nan — Pedidos Online</title>
   <meta name="description" content="Pide tus rolls y combos favoritos de Sushi Nan directamente por WhatsApp.">
+  <meta name="theme-color" content="#e8112d">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="restaurant">
+  <meta property="og:locale" content="es_CL">
+  <meta property="og:title" content="Sushi Nan — Pedidos Online">
+  <meta property="og:description" content="Rolls, promociones y sushi con retiro o delivery en Recoleta y comunas cercanas.">
+  <meta property="og:image" content="img/logo-sushinan.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Sushi Nan",
+    "servesCuisine": "Sushi",
+    "telephone": "+56936413434",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Nueva Recoleta 3632",
+      "addressLocality": "Recoleta",
+      "addressRegion": "Región Metropolitana",
+      "addressCountry": "CL"
+    },
+    "sameAs": [
+      "https://www.instagram.com/sushinan.s.centro/",
+      "https://www.facebook.com/www.sushinan.cl"
+    ]
+  }
+  </script>
   <link rel="icon" type="image/png" href="img/logo-sushinan.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=39">
+  <link rel="stylesheet" href="css/styles.css?v=45">
 </head>
 <body>
 
@@ -35,12 +63,12 @@
       <img src="img/logo-sushinan.png" alt="Logo" class="header__logo" id="header-logo">
       <span class="header__nombre" id="header-nombre">Sushi Nan</span>
     </div>
-    <button class="header__cart-btn" id="cart-toggle" aria-label="Ver carrito">
+    <button class="header__cart-btn" id="cart-toggle" aria-label="Ver carrito" aria-controls="carrito-panel" aria-expanded="false">
       <svg class="cart-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
       </svg>
-      <span id="cart-count">0</span>
+      <span id="cart-count" aria-live="polite">0</span>
     </button>
   </header>
 
@@ -48,9 +76,11 @@
   <div class="busqueda-barra">
     <div class="busqueda-wrap">
       <svg class="busqueda-icono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <label class="sr-only" for="busqueda-input">Buscar productos</label>
       <input type="search" id="busqueda-input" class="busqueda-input" placeholder="Buscar producto..." autocomplete="off" spellcheck="false">
       <button class="busqueda-limpiar" id="busqueda-limpiar" aria-label="Limpiar">✕</button>
     </div>
+    <p class="busqueda-estado sr-only" id="busqueda-estado" aria-live="polite"></p>
   </div>
 
   <!-- NAV CATEGORÍAS -->
@@ -64,14 +94,14 @@
   </main>
 
   <!-- CARRITO LATERAL -->
-  <aside class="carrito" id="carrito-panel" aria-label="Mi pedido">
+  <aside class="carrito" id="carrito-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="carrito-titulo" tabindex="-1">
     <div class="carrito__header">
       <div class="carrito__header-left">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:#e8112d">
           <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
         </svg>
-        <h2>Mi Pedido</h2>
+        <h2 id="carrito-titulo">Mi Pedido</h2>
       </div>
       <button class="carrito__cerrar" id="cart-close" aria-label="Cerrar carrito">✕</button>
     </div>
@@ -87,21 +117,27 @@
 
       <!-- DATOS DEL CLIENTE -->
       <div class="cliente-seccion">
+        <p class="pago-titulo">MODALIDAD</p>
+        <div class="modalidad-opciones" role="group" aria-label="Modalidad del pedido">
+          <button class="modalidad-btn activo" type="button" data-modalidad="delivery" aria-pressed="true">🛵 Delivery</button>
+          <button class="modalidad-btn" type="button" data-modalidad="retiro" aria-pressed="false">🏪 Retiro en local</button>
+        </div>
+        <p class="estado-negocio" id="estado-negocio" aria-live="polite"></p>
         <p class="pago-titulo">TUS DATOS</p>
         <div class="cliente-campos">
           <div class="cliente-campo">
             <label for="cliente-nombre">Nombre</label>
-            <input type="text" id="cliente-nombre" placeholder="¿Cómo te llamas?" autocomplete="name">
+            <input type="text" id="cliente-nombre" placeholder="¿Cómo te llamas?" autocomplete="name" required>
           </div>
           <div class="cliente-campo">
             <label for="cliente-telefono">Teléfono</label>
-            <input type="tel" id="cliente-telefono" placeholder="+56 9 XXXX XXXX" autocomplete="tel">
+            <input type="tel" id="cliente-telefono" placeholder="+56 9 XXXX XXXX" autocomplete="tel" inputmode="tel" required>
           </div>
-          <div class="cliente-campo">
+          <div class="cliente-campo campo-delivery">
             <label for="cliente-direccion">Dirección</label>
             <input type="text" id="cliente-direccion" placeholder="Calle y número" autocomplete="street-address">
           </div>
-          <div class="cliente-campo">
+          <div class="cliente-campo campo-delivery">
             <label for="cliente-comuna">Comuna</label>
             <select id="cliente-comuna">
               <option value="">Selecciona tu comuna...</option>
@@ -111,6 +147,7 @@
             <label for="cliente-nota">Nota (opcional)</label>
             <input type="text" id="cliente-nota" placeholder="Ej: dejar en conserjería, sin ají...">
           </div>
+          <p class="form-error" id="form-error" role="alert" aria-live="assertive"></p>
         </div>
       </div>
 
@@ -118,13 +155,13 @@
       <div class="pago-seccion" id="pago-seccion">
         <p class="pago-titulo">MÉTODO DE PAGO</p>
         <div class="pago-opciones">
-          <button class="pago-btn activo" data-metodo="efectivo">
+          <button class="pago-btn activo" type="button" data-metodo="efectivo" aria-pressed="true">
             <span>💵</span> Efectivo
           </button>
-          <button class="pago-btn" data-metodo="transferencia">
+          <button class="pago-btn" type="button" data-metodo="transferencia" aria-pressed="false">
             <span>🏦</span> Transfer.
           </button>
-          <button class="pago-btn" data-metodo="tarjeta">
+          <button class="pago-btn" type="button" data-metodo="tarjeta" aria-pressed="false">
             <span>💳</span> Tarjeta
           </button>
         </div>
@@ -151,6 +188,7 @@
           <span id="carrito-costo-envio">$0</span>
         </div>
       </div>
+      <p class="carrito__aviso" id="carrito-aviso"></p>
       <div class="carrito__total">
         <span class="carrito__total-label">Total</span>
         <span class="carrito__total-valor" id="carrito-total">$0</span>
@@ -161,22 +199,24 @@
         </svg>
         <span id="btn-pedir-texto">Pedir por WhatsApp</span>
       </button>
+      <button class="btn-vaciar" id="btn-vaciar" type="button">Vaciar pedido</button>
     </div>
   </aside>
 
   <div class="overlay" id="overlay"></div>
 
   <!-- MODAL PRODUCTO -->
-  <div class="modal-overlay" id="modal-overlay" aria-modal="true" role="dialog" aria-label="Detalle del producto">
+  <div class="modal-overlay" id="modal-overlay" aria-modal="true" aria-hidden="true" role="dialog" aria-labelledby="modal-nombre">
     <div class="modal-card" id="modal-card">
       <button class="modal-cerrar" id="modal-cerrar" aria-label="Cerrar">✕</button>
       <div class="modal-img-wrap">
-        <img src="" alt="" class="modal-img" id="modal-img">
+        <img src="" alt="" class="modal-img" id="modal-img" width="600" height="360" decoding="async">
         <span class="modal-badge" id="modal-badge"></span>
       </div>
       <div class="modal-info">
         <h2 class="modal-nombre" id="modal-nombre"></h2>
         <p class="modal-desc" id="modal-desc"></p>
+        <p class="modal-disponibilidad" id="modal-disponibilidad" hidden></p>
         <div class="modal-variaciones" id="modal-variaciones"></div>
         <div class="modal-bottom">
           <span class="modal-precio" id="modal-precio"></span>
@@ -186,8 +226,31 @@
     </div>
   </div>
 
+  <!-- CONFIRMACIÓN FINAL DEL PEDIDO -->
+  <div class="confirmacion-overlay" id="confirmacion-overlay" aria-modal="true" aria-hidden="true" role="dialog" aria-labelledby="confirmacion-titulo">
+    <div class="confirmacion-card" id="confirmacion-card" tabindex="-1">
+      <button class="modal-cerrar" id="confirmacion-cerrar" type="button" aria-label="Cerrar confirmación">✕</button>
+      <div class="confirmacion-check" aria-hidden="true">
+        <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="23"/><path d="M15 27l7 7 15-16"/></svg>
+      </div>
+      <p class="confirmacion-eyebrow">REVISA TU PEDIDO</p>
+      <h2 id="confirmacion-titulo">Todo listo para WhatsApp</h2>
+      <div class="confirmacion-resumen" id="confirmacion-resumen"></div>
+      <p class="confirmacion-nota">WhatsApp se abrirá con el pedido preparado. Solo tendrás que presionar Enviar.</p>
+      <button class="btn-pedir" id="confirmacion-continuar" type="button">Continuar a WhatsApp</button>
+      <button class="confirmacion-volver" id="confirmacion-volver" type="button">Volver y editar</button>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN DEL CARRITO -->
+  <div class="toast-carrito" id="toast-carrito" role="status" aria-live="polite" aria-atomic="true">
+    <span class="toast-carrito__icono" aria-hidden="true">✓</span>
+    <span class="toast-carrito__texto" id="toast-carrito-texto"></span>
+    <button class="toast-carrito__deshacer" id="toast-deshacer" type="button">Deshacer</button>
+  </div>
+
   <!-- BOTÓN FLOTANTE WHATSAPP -->
-  <a class="wsp-flotante" id="wsp-flotante" href="#" target="_blank" aria-label="Escríbenos por WhatsApp">
+  <a class="wsp-flotante" id="wsp-flotante" href="#" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
     </svg>
@@ -217,11 +280,11 @@
       <div class="footer__redes">
         <p class="footer__redes-titulo">Síguenos</p>
         <div class="footer__redes-links">
-          <a class="footer__red" id="footer-instagram" href="#" target="_blank" aria-label="Instagram">
+          <a class="footer__red" id="footer-instagram" href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             Instagram
           </a>
-          <a class="footer__red" id="footer-facebook" href="#" target="_blank" aria-label="Facebook">
+          <a class="footer__red" id="footer-facebook" href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             Facebook
           </a>
@@ -229,14 +292,13 @@
       </div>
     </div>
     <div class="footer__bottom">
-      <p>© 2025 Sushi Nan · Todos los derechos reservados · Pedidos sujetos a disponibilidad</p>
+      <p>© <span id="footer-year"></span> Sushi Nan · Todos los derechos reservados · Pedidos sujetos a disponibilidad</p>
     </div>
   </footer>
 
-  <script src="js/data.js?v=4"></script>
+  <script src="js/data.js?v=5"></script>
   <script src="js/placeholders.js?v=2"></script>
-  <script src="js/ilustraciones.js?v=1"></script>
-  <script src="js/cart.js?v=4"></script>
-  <script src="js/app.js?v=13"></script>
+  <script src="js/cart.js?v=7"></script>
+  <script src="js/app.js?v=20"></script>
 </body>
 </html>
