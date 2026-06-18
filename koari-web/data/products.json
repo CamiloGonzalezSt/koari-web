@@ -1027,7 +1027,7 @@
           "nombre": "Hosomaki Queso y Palta",
           "descripcion": "10 piezas.",
           "precio": 2200,
-          "imagen": "img/hosomaki.jpg",
+          "imagen": "img/hosomaki/hosomaki1.png",
           "badge": null
         },
         {
@@ -1035,7 +1035,7 @@
           "nombre": "Hosomaki Kanikama y Palta",
           "descripcion": "10 piezas.",
           "precio": 2400,
-          "imagen": "img/hosomaki.jpg",
+          "imagen": "img/hosomaki/hosomaki2.png",
           "badge": null
         },
         {
@@ -1043,7 +1043,7 @@
           "nombre": "Hosomaki Pollo y Palta",
           "descripcion": "10 piezas.",
           "precio": 2500,
-          "imagen": "img/hosomaki.jpg",
+          "imagen": "img/hosomaki/hosomaki3.png",
           "badge": null
         },
         {
@@ -1051,7 +1051,7 @@
           "nombre": "Hosomaki Camarón y Queso",
           "descripcion": "10 piezas.",
           "precio": 2700,
-          "imagen": "img/hosomaki.jpg",
+          "imagen": "img/hosomaki/hosomaki4.png",
           "badge": null
         },
         {
@@ -1059,7 +1059,7 @@
           "nombre": "Hosomaki Salmón y Queso",
           "descripcion": "10 piezas.",
           "precio": 2900,
-          "imagen": "img/hosomaki.jpg",
+          "imagen": "img/hosomaki/hosomaki5.png",
           "badge": null
         }
       ]
@@ -1074,7 +1074,7 @@
           "nombre": "Futomaki Queso y Palta",
           "descripcion": "10 piezas · queso, palta, cebollín.",
           "precio": 2800,
-          "imagen": "img/futomaki.jpg",
+          "imagen": "img/futomaki/futomaki.png",
           "badge": null
         },
         {
