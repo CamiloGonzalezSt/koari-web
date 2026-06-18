@@ -1,6 +1,6 @@
 import { DATA } from '../data.js?v=8';
 import { carrito, formatearPrecio } from '../cart.js?v=8';
-import { escaparHtml, fechaChileISO, horaChile, normalizarTelefono, mantenerFoco } from './utils.js';
+import { escaparHtml, fechaChileISO, horaChile, normalizarTelefono, mantenerFoco, bloquearScroll, desbloquearScroll } from './utils.js';
 import { borrarDatosLocales, guardarConCaducidad, leerConCaducidad } from './storage.js';
 import { obtenerInfoHorario, textoProximaAtencion, validarProgramacion } from './horarios.js';
 import { mostrarAvisoSimple } from './ui.js';
@@ -109,7 +109,7 @@ export function inicializarEventosCarrito() {
     panel.setAttribute('aria-hidden', 'true');
     toggle.setAttribute('aria-expanded', 'false');
     if (!document.getElementById('modal-overlay').classList.contains('activo'))
-      document.body.classList.remove('sin-scroll');
+      desbloquearScroll();
     focoAnterior?.focus();
   };
 
@@ -119,7 +119,7 @@ export function inicializarEventosCarrito() {
     overlay.classList.add('activo');
     panel.setAttribute('aria-hidden', 'false');
     toggle.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('sin-scroll');
+    bloquearScroll();
     panel.focus();
   });
 
@@ -517,7 +517,7 @@ function abrirConfirmacion(url, resumen) {
   const overlay = document.getElementById('confirmacion-overlay');
   overlay.classList.add('activo');
   overlay.setAttribute('aria-hidden', 'false');
-  document.body.classList.add('sin-scroll');
+  bloquearScroll();
   document.getElementById('confirmacion-card').focus();
 }
 
@@ -528,9 +528,8 @@ function cerrarConfirmacion() {
   overlay.setAttribute('aria-hidden', 'true');
   pedidoPendienteUrl = '';
   if (!document.getElementById('carrito-panel').classList.contains('abierto') &&
-      !document.getElementById('modal-overlay').classList.contains('activo')) {
-    document.body.classList.remove('sin-scroll');
-  }
+      !document.getElementById('modal-overlay').classList.contains('activo'))
+    desbloquearScroll();
   focoAnterior?.focus();
 }
 

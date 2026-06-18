@@ -32,6 +32,19 @@ export function mantenerFoco(evento, contenedor) {
   else if (!evento.shiftKey && document.activeElement === ultimo) { evento.preventDefault(); primero.focus(); }
 }
 
+export function bloquearScroll() {
+  const scrollY = window.scrollY;
+  document.body.style.top = `-${scrollY}px`;
+  document.body.classList.add('sin-scroll');
+}
+
+export function desbloquearScroll() {
+  const scrollY = parseInt(document.body.style.top || '0') * -1;
+  document.body.classList.remove('sin-scroll');
+  document.body.style.top = '';
+  window.scrollTo(0, scrollY);
+}
+
 export function horaChile(fecha = new Date()) {
   const partes = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false

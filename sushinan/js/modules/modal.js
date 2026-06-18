@@ -2,7 +2,7 @@ import { DATA } from '../data.js?v=8';
 import { carrito, formatearPrecio } from '../cart.js?v=8';
 import { CATEGORIA_TIPO, generarImagenProducto } from '../placeholders.js?v=3';
 import { escaparHtml } from './utils.js';
-import { mantenerFoco } from './utils.js';
+import { mantenerFoco, bloquearScroll, desbloquearScroll } from './utils.js';
 import { establecerProductoEnUrl, quitarProductoDeUrl, compartirProducto } from './compartir.js';
 import {
   tieneVariaciones, precioCardTexto, productoConVariacion,
@@ -93,7 +93,7 @@ export function abrirModal(producto, actualizarUrl = true) {
   modalCard.classList.remove('animando');
   void modalCard.offsetWidth;
   modalCard.classList.add('animando');
-  document.body.classList.add('sin-scroll');
+  bloquearScroll();
   document.getElementById('modal-cerrar').focus();
   if (actualizarUrl) establecerProductoEnUrl(producto.id);
 }
@@ -104,7 +104,7 @@ export function cerrarModal() {
   overlay.classList.remove('activo');
   overlay.setAttribute('aria-hidden', 'true');
   if (!document.getElementById('carrito-panel').classList.contains('abierto'))
-    document.body.classList.remove('sin-scroll');
+    desbloquearScroll();
   modalProductoActual  = null;
   modalVariacionActual = null;
   quitarProductoDeUrl();
