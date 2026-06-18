@@ -1,6 +1,6 @@
 import { DATA } from '../data.js?v=8';
 import { carrito, formatearPrecio } from '../cart.js?v=8';
-import { escaparHtml, fechaChileISO, normalizarTelefono, mantenerFoco } from './utils.js';
+import { escaparHtml, fechaChileISO, horaChile, normalizarTelefono, mantenerFoco } from './utils.js';
 import { borrarDatosLocales, guardarConCaducidad, leerConCaducidad } from './storage.js';
 import { obtenerInfoHorario, textoProximaAtencion, validarProgramacion } from './horarios.js';
 import { mostrarAvisoSimple } from './ui.js';
@@ -232,21 +232,96 @@ export function inicializarPrivacidad() {
 }
 
 export function inicializarProgramacionPedido() {
-  const toggle = document.getElementById('programar-pedido');
-  const campos = document.getElementById('programacion-campos');
-  const fecha  = document.getElementById('cliente-fecha-pedido');
+  const toggle   = document.getElementById('programar-pedido');
+  const campos   = document.getElementById('programacion-campos');
+  const fecha    = document.getElementById('cliente-fecha-pedido');
+  const hora     = document.getElementById('cliente-hora-pedido');
+  const errorEl  = document.getElementById('form-error');
   const hoyChile = fechaChileISO();
+
   fecha.min = hoyChile;
+
+  function aplicarRestriccionesHorario() {
+    const valorFecha = fecha.value;
+    if (!valorFecha) { hora.removeAttribute('min'); hora.removeAttribute('max'); return; }
+
+    const dia   = new Date(`${valorFecha}T12:00:00`).getDay();
+    const rango = DATA.negocio.horarios_pedido?.[String(dia)];
+
+    if (!rango) {
+      const nombres = ['domingos', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados'];
+      fecha.classList.add('campo-error');
+      fecha.setAttribute('aria-invalid', 'true');
+      errorEl.className   = 'form-error';
+      errorEl.textContent = `El local no atiende los ${nombres[dia]}. Por favor elige otro día.`;
+      hora.removeAttribute('min');
+      hora.removeAttribute('max');
+      hora.value = '';
+      return;
+    }
+
+    fecha.classList.remove('campo-error');
+    fecha.setAttribute('aria-invalid', 'false');
+    if (errorEl.textContent && !errorEl.classList.contains('exito')) errorEl.textContent = '';
+
+    const minHora = valorFecha === hoyChile
+      ? horaChile()
+      : rango[0];
+    const minEfectivo = minHora > rango[0] ? minHora : rango[0];
+
+    hora.min = minEfectivo;
+    hora.max = rango[1];
+
+    const aviso = document.getElementById('horario-programacion-aviso');
+    if (aviso) aviso.textContent = `Horario disponible: ${rango[0]} – ${rango[1]}`;
+
+    if (hora.value && (hora.value < hora.min || hora.value > hora.max)) {
+      hora.classList.add('campo-error');
+      hora.setAttribute('aria-invalid', 'true');
+      errorEl.textContent = `Para ese día atendemos de ${rango[0]} a ${rango[1]}.`;
+    }
+  }
+
   if (toggle.checked && !fecha.value) fecha.value = hoyChile;
+  aplicarRestriccionesHorario();
+
+  fecha.addEventListener('change', () => {
+    hora.value = '';
+    hora.classList.remove('campo-error');
+    hora.setAttribute('aria-invalid', 'false');
+    aplicarRestriccionesHorario();
+    guardarDatosCliente();
+  });
+
+  hora.addEventListener('change', () => {
+    if (hora.value && hora.min && hora.value < hora.min) {
+      hora.classList.add('campo-error');
+      hora.setAttribute('aria-invalid', 'true');
+      errorEl.className   = 'form-error';
+      errorEl.textContent = `La hora debe ser después de las ${hora.min}.`;
+    } else if (hora.value && hora.max && hora.value > hora.max) {
+      hora.classList.add('campo-error');
+      hora.setAttribute('aria-invalid', 'true');
+      errorEl.className   = 'form-error';
+      errorEl.textContent = `El último pedido del día es a las ${hora.max}.`;
+    } else {
+      hora.classList.remove('campo-error');
+      hora.setAttribute('aria-invalid', 'false');
+      if (errorEl.textContent && !errorEl.classList.contains('exito')) errorEl.textContent = '';
+    }
+    guardarDatosCliente();
+  });
 
   const actualizar = () => {
-    campos.hidden = !toggle.checked;
+    campos.hidden  = !toggle.checked;
     fecha.required = toggle.checked;
-    document.getElementById('cliente-hora-pedido').required = toggle.checked;
+    hora.required  = toggle.checked;
+    if (toggle.checked) aplicarRestriccionesHorario();
     guardarDatosCliente();
   };
+
   toggle.addEventListener('change', () => {
-    if (toggle.checked && !fecha.value) fecha.value = hoyChile;
+    if (toggle.checked && !fecha.value) { fecha.value = hoyChile; aplicarRestriccionesHorario(); }
     actualizar();
   });
   actualizar();

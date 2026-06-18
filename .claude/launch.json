@@ -4,7 +4,7 @@
     {
       "name": "sushinan",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "koari-web", "-l", "8787"],
+      "runtimeArgs": ["serve", "sushinan", "-l", "8787"],
       "port": 8787
     }
   ]

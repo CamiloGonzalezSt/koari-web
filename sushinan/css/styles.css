@@ -1313,6 +1313,13 @@ header, nav, main, aside, footer, .hero, .overlay {
   background: rgba(232,17,45,0.06);
 }
 
+.campo-ayuda {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 3px;
+  min-height: 1em;
+}
+
 .cliente-campo select {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);

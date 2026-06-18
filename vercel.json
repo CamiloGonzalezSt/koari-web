@@ -1,5 +1,5 @@
 {
-  "outputDirectory": "koari-web",
+  "outputDirectory": "sushinan",
   "headers": [
     {
       "source": "/(.*)",

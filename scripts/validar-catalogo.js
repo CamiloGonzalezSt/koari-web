@@ -7,7 +7,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const rutaCatalogo = join(__dirname, '../koari-web/data/products.json');
+const rutaCatalogo = join(__dirname, '../sushinan/data/products.json');
 
 let errores = 0;
 let advertencias = 0;
@@ -70,7 +70,7 @@ for (const [ci, cat] of data.categorias.entries()) {
 
     // Imagen
     if (p.imagen) {
-      const ruta = join(__dirname, '../koari-web', p.imagen);
+      const ruta = join(__dirname, '../sushinan', p.imagen);
       if (!existsSync(ruta)) advertencia(`"${p.id}": imagen no encontrada → ${p.imagen}`);
     }
 
