@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Sushi Nan — Pedidos Online</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{ 
+  --rojo:#e8112d;
+  --negro:#0a0a0a;
+  --gris1:#f8f8f6;
+  --gris2:#eeede9;
+  --gris3:#ccc;
+  --gris4:#888;
+  --verde:#1a7f4b;
+  --azul:#1a5fa8;
+  --wsp:#25D366;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:15px;line-height:1.75;color:#1a1a1a;background:#fff;
+  max-width:900px;margin:0 auto;padding:48px 36px;
+}
+
+/* ── PORTADA ── */
+.portada{
+  text-align:center;padding:52px 0 44px;
+  border-bottom:3px solid var(--rojo);margin-bottom:52px;
+}
+.portada .emblema{
+  width:80px;height:80px;background:var(--rojo);border-radius:20px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;font-size:40px;
+}
+.portada h1{font-size:30px;font-weight:800;color:var(--negro);margin-bottom:6px}
+.portada .sub{font-size:17px;color:var(--gris4);margin-bottom:28px}
+.chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px}
+.chip-verde{background:#d1fae5;color:#065f46}
+.chip-gris{background:#f0eeea;color:#555}
+
+/* ── ÍNDICE ── */
+.indice{background:var(--gris1);border-radius:12px;padding:24px 28px;margin-bottom:52px}
+.indice h2{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gris4);margin-bottom:14px}
+.indice-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}
+.indice a{color:var(--rojo);text-decoration:none;font-size:14px;font-weight:500}
+.indice a:hover{text-decoration:underline}
+.indice-num{display:inline-block;width:20px;font-weight:800;color:var(--gris3)}
+
+/* ── SECCIÓN ── */
+section{margin-bottom:60px}
+.sec-label{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--rojo);color:#fff;
+  font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 14px;border-radius:20px;margin-bottom:10px;
+}
+section h2{font-size:22px;font-weight:800;color:var(--negro);margin-bottom:6px;line-height:1.3}
+.sec-intro{font-size:15px;color:#555;margin-bottom:24px}
+
+h3{font-size:17px;font-weight:700;color:var(--negro);margin:32px 0 10px}
+h4{font-size:13px;font-weight:700;color:var(--gris4);text-transform:uppercase;letter-spacing:.06em;margin:20px 0 6px}
+p{margin-bottom:12px;color:#444;font-size:14px}
+
+/* ── CARDS ── */
+.card{background:var(--gris1);border:1px solid var(--gris2);border-radius:10px;padding:18px 22px;margin-bottom:12px}
+.card-rojo{border-left:4px solid var(--rojo);background:#fff5f5}
+.card-verde{border-left:4px solid var(--verde);background:#f0fdf4}
+.card-azul{border-left:4px solid var(--azul);background:#eff6ff}
+.card-naranja{border-left:4px solid #d97706;background:#fffbeb}
+.card-wsp{border-left:4px solid var(--wsp);background:#f0fdf4}
+
+/* ── GRIDS ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+
+/* ── CHECKLIST ── */
+.check{list-style:none;padding:0}
+.check li{display:flex;gap:10px;align-items:flex-start;margin-bottom:9px;font-size:14px;color:#333}
+.check li::before{content:"✓";color:var(--verde);font-weight:900;flex-shrink:0;font-size:15px;line-height:1.6}
+
+/* ── PASOS ── */
+.pasos{list-style:none;padding:0}
+.pasos li{display:flex;gap:14px;margin-bottom:14px;font-size:14px;color:#333;align-items:flex-start}
+.paso-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--rojo);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;flex-shrink:0;margin-top:1px;
+}
+.paso-txt strong{display:block;font-weight:700;color:var(--negro);margin-bottom:2px}
+
+/* ── TABLA ── */
+table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:13px}
+th{background:var(--gris1);padding:9px 12px;text-align:left;font-weight:700;border:1px solid var(--gris2);color:var(--negro)}
+td{padding:9px 12px;border:1px solid var(--gris2);color:#444;vertical-align:top}
+tr:nth-child(even) td{background:#fafaf8}
+
+/* ── CODE ── */
+code{font-family:"SF Mono",Consolas,monospace;font-size:12px;background:#f0f0ec;border:1px solid #ddd;padding:1px 6px;border-radius:4px;color:#c0392b}
+.bloque-codigo{
+  font-family:"SF Mono",Consolas,monospace;font-size:12px;
+  background:#1a1a1a;color:#d4d4d4;
+  border-radius:10px;padding:18px 22px;margin:12px 0;line-height:2;
+  overflow-x:auto;white-space:pre;
+}
+.bloque-codigo .cm{color:#6a9955}
+.bloque-codigo .cs{color:#ce9178}
+.bloque-codigo .ck{color:#9cdcfe}
+
+/* ── CALLOUT ── */
+.callout{border-radius:10px;padding:15px 20px;margin:18px 0;font-size:14px;line-height:1.6}
+.callout-warn{background:#fffbeb;border:1px solid #fbbf24;color:#92400e}
+.callout-info{background:#eff6ff;border:1px solid #93c5fd;color:#1e40af}
+.callout-ok{background:#f0fdf4;border:1px solid #86efac;color:#14532d}
+.callout strong{font-weight:800}
+
+/* ── BADGE ── */
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.badge-ok{background:#d1fae5;color:#065f46}
+.badge-warn{background:#fef3c7;color:#92400e}
+.badge-red{background:#fee2e2;color:#991b1b}
+
+/* ── DIVISOR ── */
+.divisor{border:none;border-top:1px solid var(--gris2);margin:40px 0}
+
+/* ── FOOTER ── */
+.doc-footer{
+  margin-top:60px;padding-top:20px;
+  border-top:1px solid var(--gris2);
+  text-align:center;font-size:12px;color:#aaa;
+}
+
+/* ══════════════════════════════════════════════
+   MOCKUPS
+══════════════════════════════════════════════ */
+
+/* Contenedor general de pantallazos */
+.screens-row{
+  display:flex;gap:24px;align-items:flex-start;
+  margin:24px 0;flex-wrap:wrap;
+}
+.screen-label{
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--gris4);margin-bottom:8px;text-align:center;
+}
+
+/* ── Marco CELULAR ── */
+.phone-frame{
+  flex:0 0 220px;
+  background:#111;border-radius:36px;
+  padding:14px 10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.22),0 0 0 2px #333;
+  position:relative;
+}
+.phone-notch{
+  width:70px;height:18px;background:#111;border-radius:0 0 12px 12px;
+  margin:0 auto 8px;
+}
+.phone-screen{
+  background:#fff;border-radius:24px;overflow:hidden;
+  height:440px;position:relative;
+}
+
+/* ── Marco DESKTOP ── */
+.desktop-frame{
+  flex:1;min-width:380px;
+  background:#e8e6e3;border-radius:12px;
+  padding:28px 14px 10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.12);
+  position:relative;
+}
+.desktop-topbar{
+  position:absolute;top:10px;left:14px;
+  display:flex;gap:6px;align-items:center;
+}
+.desktop-dot{width:10px;height:10px;border-radius:50%}
+.desktop-urlbar{
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  background:#fff;border-radius:6px;padding:3px 12px;
+  font-size:10px;color:#888;width:200px;text-align:center;
+  border:1px solid #ccc;
+}
+.desktop-screen{
+  background:#fff;border-radius:8px;overflow:hidden;
+  min-height:360px;
+}
+
+/* ── Contenido del sitio (mini versión) ── */
+.mini-header{
+  background:var(--negro);padding:8px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.mini-logo{display:flex;align-items:center;gap:6px}
+.mini-logo-img{
+  width:22px;height:22px;border-radius:4px;
+  background:var(--rojo);display:flex;align-items:center;justify-content:center;
+  font-size:11px;
+}
+.mini-logo-txt{color:#fff;font-size:10px;font-weight:700;letter-spacing:.03em}
+.mini-cart-btn{
+  background:rgba(255,255,255,.12);border-radius:6px;
+  padding:4px 8px;display:flex;align-items:center;gap:4px;
+}
+.mini-cart-icon{font-size:11px}
+.mini-cart-num{
+  background:var(--rojo);color:#fff;font-size:9px;font-weight:800;
+  border-radius:50%;width:14px;height:14px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.mini-hero{
+  background:linear-gradient(135deg,#0a0a0a 60%,#1a0408);
+  padding:14px 12px 10px;text-align:center;
+}
+.mini-hero-logo{
+  width:36px;height:36px;background:var(--rojo);border-radius:8px;
+  margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.mini-hero h1{color:#fff;font-size:11px;font-weight:800;letter-spacing:.05em;margin-bottom:2px}
+.mini-hero p{color:rgba(255,255,255,.55);font-size:8px}
+
+.mini-search{
+  padding:6px 8px;background:#f5f4f2;
+  display:flex;align-items:center;gap:6px;border-bottom:1px solid #eee;
+}
+.mini-search-box{
+  flex:1;background:#fff;border:1px solid #ddd;border-radius:16px;
+  padding:3px 8px;font-size:8px;color:#aaa;
+  display:flex;align-items:center;gap:4px;
+}
+
+.mini-cats{
+  display:flex;gap:5px;padding:6px 8px;
+  border-bottom:1px solid #eee;overflow:hidden;
+  background:#fff;
+}
+.mini-cat{
+  font-size:7px;padding:2px 7px;border-radius:10px;white-space:nowrap;
+  background:#f5f4f2;color:#555;font-weight:600;border:1px solid #ddd;
+}
+.mini-cat.active{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+
+.mini-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;
+  padding:8px;background:#f5f4f2;
+}
+.mini-card{
+  background:#fff;border-radius:6px;overflow:hidden;
+  border:1px solid #eee;
+}
+.mini-card-img{
+  height:48px;background:linear-gradient(135deg,#1a1a1a,#333);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  position:relative;
+}
+.mini-card-badge{
+  position:absolute;top:3px;left:3px;
+  background:var(--rojo);color:#fff;
+  font-size:5px;font-weight:800;padding:1px 4px;border-radius:3px;letter-spacing:.05em;
+}
+.mini-card-body{padding:5px 6px}
+.mini-card-name{font-size:7px;font-weight:700;color:var(--negro);margin-bottom:1px}
+.mini-card-desc{font-size:6px;color:#888;margin-bottom:4px;line-height:1.3}
+.mini-card-bottom{display:flex;align-items:center;justify-content:space-between}
+.mini-card-price{font-size:8px;font-weight:800;color:var(--rojo)}
+.mini-btn-add{
+  background:var(--rojo);color:#fff;
+  font-size:6px;font-weight:700;padding:2px 5px;border-radius:4px;
+}
+.mini-btn-choose{
+  background:var(--negro);color:#fff;
+  font-size:6px;font-weight:700;padding:2px 5px;border-radius:4px;
+}
+
+/* Panel carrito mini */
+.mini-cart-panel{
+  position:absolute;top:0;right:0;bottom:0;width:65%;
+  background:#fff;padding:10px;
+  box-shadow:-4px 0 16px rgba(0,0,0,.15);
+  font-size:8px;
+}
+.mini-cart-title{font-weight:800;font-size:9px;margin-bottom:8px;color:var(--negro)}
+.mini-cart-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;border-bottom:1px solid #f0f0f0;
+}
+.mini-cart-item-name{font-size:7px;color:#333}
+.mini-cart-item-price{font-size:7px;font-weight:700;color:var(--negro)}
+.mini-cart-total{
+  display:flex;justify-content:space-between;
+  margin-top:8px;font-weight:800;font-size:9px;
+}
+.mini-form-section{margin-top:8px}
+.mini-form-title{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:4px}
+.mini-input{
+  width:100%;border:1px solid #ddd;border-radius:4px;
+  padding:3px 6px;font-size:7px;color:#333;margin-bottom:4px;background:#fafaf8;
+}
+.mini-btn-wsp{
+  width:100%;background:var(--wsp);color:#fff;
+  font-size:8px;font-weight:800;padding:6px;
+  border-radius:6px;text-align:center;margin-top:6px;
+}
+
+/* Modalidad mini */
+.mini-modalidad{display:flex;gap:4px;margin-bottom:6px}
+.mini-mod-btn{
+  flex:1;text-align:center;font-size:6px;font-weight:700;
+  padding:3px;border-radius:4px;border:1px solid #ddd;color:#555;
+}
+.mini-mod-btn.active{background:var(--negro);color:#fff;border-color:var(--negro)}
+
+/* Mensaje WhatsApp */
+.wsp-screen{
+  background:#0b141a;border-radius:10px;overflow:hidden;
+  font-family:-apple-system,sans-serif;margin:0;
+}
+.wsp-header{
+  background:#1f2c34;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.wsp-avatar{
+  width:36px;height:36px;border-radius:50%;background:#25d366;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.wsp-contact{color:#fff}
+.wsp-contact-name{font-size:13px;font-weight:600}
+.wsp-contact-status{font-size:10px;color:#8696a0}
+.wsp-body{padding:12px 10px;min-height:220px}
+.wsp-bubble{
+  background:#005c4b;color:#e9edef;
+  border-radius:12px 12px 2px 12px;
+  padding:10px 14px;font-size:11px;line-height:1.6;
+  max-width:85%;margin-left:auto;
+  white-space:pre-line;
+}
+.wsp-bubble strong{font-weight:700;color:#25d366}
+.wsp-time{text-align:right;font-size:9px;color:#8696a0;margin-top:4px}
+.wsp-input-bar{
+  background:#1f2c34;padding:8px 10px;
+  display:flex;align-items:center;gap:8px;
+}
+.wsp-input{
+  flex:1;background:#2a3942;border-radius:20px;
+  padding:7px 14px;color:#8696a0;font-size:11px;
+}
+.wsp-send{
+  width:36px;height:36px;border-radius:50%;background:#00a884;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+
+/* Pantalla modal */
+.mini-modal-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.6);
+  display:flex;align-items:flex-end;
+}
+.mini-modal-card{
+  background:#fff;border-radius:16px 16px 0 0;
+  width:100%;padding:12px 10px;
+}
+.mini-modal-img{
+  width:100%;height:80px;background:linear-gradient(135deg,#1a1a1a,#333);
+  border-radius:10px;margin-bottom:8px;
+  display:flex;align-items:center;justify-content:center;font-size:32px;
+}
+.mini-modal-name{font-size:10px;font-weight:800;color:var(--negro);margin-bottom:4px}
+.mini-modal-desc{font-size:7px;color:#888;margin-bottom:8px}
+.mini-modal-var-title{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#aaa;margin-bottom:4px}
+.mini-var-row{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:8px}
+.mini-var-btn{
+  font-size:6px;padding:2px 6px;border-radius:8px;
+  border:1px solid #ddd;color:#555;
+}
+.mini-var-btn.sel{
+  background:var(--negro);color:#fff;border-color:var(--negro);
+}
+.mini-modal-bottom{
+  display:flex;align-items:center;justify-content:space-between;margin-top:6px;
+}
+.mini-modal-price{font-size:13px;font-weight:800;color:var(--rojo)}
+.mini-btn-add2{
+  background:var(--rojo);color:#fff;
+  font-size:8px;font-weight:700;padding:5px 10px;border-radius:6px;
+}
+
+/* Desktop grid de cards */
+.desktop-mini-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  padding:10px;background:#f5f4f2;
+}
+.desktop-mini-card{
+  background:#fff;border-radius:8px;overflow:hidden;
+  border:1px solid #eee;
+}
+.desktop-mini-card-img{
+  height:70px;background:linear-gradient(135deg,#1a1a1a,#444);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  position:relative;
+}
+.desktop-mini-card-badge{
+  position:absolute;bottom:4px;left:4px;
+  background:var(--rojo);color:#fff;
+  font-size:6px;font-weight:800;padding:1px 5px;border-radius:3px;
+}
+.desktop-mini-card-body{padding:7px 8px}
+.desktop-mini-card-name{font-size:8px;font-weight:700;color:var(--negro);margin-bottom:2px}
+.desktop-mini-card-desc{font-size:6px;color:#888;margin-bottom:6px;line-height:1.4}
+.desktop-mini-card-bottom{display:flex;align-items:center;justify-content:space-between}
+.desktop-mini-card-price{font-size:10px;font-weight:800;color:var(--rojo)}
+.desktop-btn-add{background:var(--rojo);color:#fff;font-size:7px;font-weight:700;padding:3px 7px;border-radius:5px}
+
+.desktop-mini-header{
+  background:var(--negro);padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.desktop-mini-logo{display:flex;align-items:center;gap:8px}
+.desktop-mini-logo-box{width:26px;height:26px;background:var(--rojo);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.desktop-mini-logo-txt{color:#fff;font-size:11px;font-weight:800}
+.desktop-mini-search{
+  background:rgba(255,255,255,.1);border-radius:20px;
+  padding:4px 12px;color:rgba(255,255,255,.5);font-size:9px;width:140px;
+}
+.desktop-mini-cart{
+  display:flex;align-items:center;gap:5px;
+  background:var(--rojo);border-radius:6px;padding:5px 10px;
+}
+.desktop-mini-cart-txt{color:#fff;font-size:9px;font-weight:700}
+.desktop-mini-cats{
+  display:flex;gap:6px;padding:8px 16px;
+  border-bottom:1px solid #eee;background:#fff;overflow:hidden;
+}
+.desktop-mini-cat{
+  font-size:8px;padding:3px 10px;border-radius:10px;white-space:nowrap;
+  background:#f5f4f2;color:#555;font-weight:600;border:1px solid #ddd;
+}
+.desktop-mini-cat.active{background:var(--rojo);color:#fff;border-color:var(--rojo)}
+.desktop-mini-sec-title{
+  font-size:10px;font-weight:800;color:var(--negro);
+  padding:8px 12px 4px;background:#f5f4f2;
+  display:flex;align-items:center;gap:6px;
+}
+
+/* ── PRINT ── */
+@media print{
+  body{max-width:100%;padding:20px 28px;font-size:13px}
+  .portada{padding:30px 0}
+  section{page-break-inside:avoid}
+  section h2{page-break-before:always}
+  section:first-of-type h2{page-break-before:avoid}
+  .indice{page-break-after:always}
+  a{color:inherit;text-decoration:none}
+  .bloque-codigo{background:#f5f5f2;color:#333;border:1px solid #ccc}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .screens-row{flex-direction:column}
+  .desktop-frame{min-width:unset}
+}
+@media(max-width:640px){
+  body{padding:24px 16px}
+  .grid2,.grid3,.indice-grid{grid-template-columns:1fr}
+  .screens-row{flex-direction:column}
+  .desktop-frame{min-width:unset}
+}
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="portada">
+  <div class="emblema">🍣</div>
+  <h1>Sushi Nan — Pedidos Online</h1>
+  <p class="sub">Guía completa del sistema · Para el equipo del local</p>
+  <div class="chips">
+    <span class="chip chip-verde">✓ Listo para usar</span>
+    <span class="chip chip-gris">Versión 1.0 · Junio 2026</span>
+    <span class="chip chip-gris">Para guardar y consultar cuando quieran</span>
+  </div>
+</div>
+
+<!-- ÍNDICE -->
+<div class="indice">
+  <h2>¿Qué hay en esta guía?</h2>
+  <div class="indice-grid">
+    <div><a href="#que-es"><span class="indice-num">1.</span> ¿Qué es este sistema?</a></div>
+    <div><a href="#como-se-ve"><span class="indice-num">2.</span> ¿Cómo se ve el sitio?</a></div>
+    <div><a href="#pedido"><span class="indice-num">3.</span> ¿Cómo llega un pedido?</a></div>
+    <div><a href="#wsp-ejemplo"><span class="indice-num">4.</span> Ejemplo de mensaje de WhatsApp</a></div>
+    <div><a href="#funciones"><span class="indice-num">5.</span> Todo lo que puede hacer el cliente</a></div>
+    <div><a href="#catalogo"><span class="indice-num">6.</span> Cómo actualizar el menú</a></div>
+    <div><a href="#publicar"><span class="indice-num">7.</span> Cómo publicar cambios</a></div>
+    <div><a href="#costos"><span class="indice-num">8.</span> Costos del sistema</a></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 1. QUÉ ES -->
+<!-- ══════════════════════════════════════ -->
+<section id="que-es">
+  <div class="sec-label">1</div>
+  <h2>¿Qué es este sistema?</h2>
+  <p class="sec-intro">En pocas palabras: es su propio sistema de pedidos online, sin pagar comisiones a nadie.</p>
+
+  <div class="grid2">
+    <div class="card card-verde">
+      <h4 style="margin-top:0">Lo que tiene el local ahora</h4>
+      <ul class="check">
+        <li>Un sitio web donde los clientes ven el menú con fotos y precios</li>
+        <li>El cliente arma su pedido y lo envía por WhatsApp con un solo clic</li>
+        <li>El pedido llega completo y ordenado al teléfono del local</li>
+        <li>Sin apps de delivery, sin comisiones, sin mensualidades</li>
+      </ul>
+    </div>
+    <div class="card card-azul">
+      <h4 style="margin-top:0">Lo que NO necesita el local</h4>
+      <ul class="check">
+        <li>No necesitan contratar ningún servicio externo</li>
+        <li>No hay que instalar nada en los teléfonos del local</li>
+        <li>No hay que aprender ningún programa nuevo para recibir pedidos</li>
+        <li>Los pedidos llegan a WhatsApp, igual que siempre</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-ok">
+    <strong>Resumen:</strong> El cliente entra al sitio web, elige lo que quiere comer, y le llega un mensaje de WhatsApp al local con todo el detalle del pedido listo para confirmar.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 2. CÓMO SE VE -->
+<!-- ══════════════════════════════════════ -->
+<section id="como-se-ve">
+  <div class="sec-label">2</div>
+  <h2>¿Cómo se ve el sitio?</h2>
+  <p class="sec-intro">El sitio se adapta automáticamente tanto al teléfono como al computador.</p>
+
+  <div class="screens-row">
+    <!-- CELULAR -->
+    <div>
+      <p class="screen-label">📱 Vista en celular</p>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mini-header">
+            <div class="mini-logo">
+              <div class="mini-logo-img">🍣</div>
+              <span class="mini-logo-txt">Sushi Nan</span>
+            </div>
+            <div class="mini-cart-btn">
+              <span class="mini-cart-icon">🛍</span>
+              <div class="mini-cart-num">3</div>
+            </div>
+          </div>
+          <div class="mini-hero">
+            <div class="mini-hero-logo">🍣</div>
+            <h1>SUSHI NAN</h1>
+            <p>El sabor que prende fuego</p>
+          </div>
+          <div class="mini-search">
+            <div class="mini-search-box">
+              <span>🔍</span>
+              <span>Buscar productos...</span>
+            </div>
+            <span style="font-size:14px">♥ <span style="font-size:7px;color:#888">0</span></span>
+          </div>
+          <div class="mini-cats">
+            <div class="mini-cat active">🍱 Promos</div>
+            <div class="mini-cat">🥬 Veg.</div>
+            <div class="mini-cat">🍣 Rolls</div>
+            <div class="mini-cat">🥟 Gyosas</div>
+          </div>
+          <div style="padding:6px 8px 2px;background:#f5f4f2">
+            <span style="font-size:9px;font-weight:800;color:#333">🍱 Promos Mixtas y VIP</span>
+          </div>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <div class="mini-card-img">
+                🍱
+                <div class="mini-card-badge">PROMO</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="mini-card-name">Promo 1 — 20 Piezas</div>
+                <div class="mini-card-desc">10 Pollo, queso · 10 Kanikama, palta</div>
+                <div class="mini-card-bottom">
+                  <span class="mini-card-price">$7.500</span>
+                  <span class="mini-btn-add">+ Agregar</span>
+                </div>
+              </div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-img">
+                🍣
+                <div class="mini-card-badge">VIP</div>
+              </div>
+              <div class="mini-card-body">
+                <div class="mini-card-name">Promo 5 — 40 Piezas Vip</div>
+                <div class="mini-card-desc">Salmón, camarón, kanikama..</div>
+                <div class="mini-card-bottom">
+                  <span class="mini-card-price">$16.990</span>
+                  <span class="mini-btn-add">+ Agregar</span>
+                </div>
+              </div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-img">🌯</div>
+              <div class="mini-card-body">
+                <div class="mini-card-name">Camarón tempura, queso...</div>
+                <div class="mini-card-desc">Elige cebollín o palta</div>
+                <div class="mini-card-bottom">
+                  <span class="mini-card-price">desde $4.200</span>
+                  <span class="mini-btn-choose">Elegir</span>
+                </div>
+              </div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-img">⭐</div>
+              <div class="mini-card-body">
+                <div class="mini-card-name">Arma tu Roll</div>
+                <div class="mini-card-desc">Elige tus ingredientes</div>
+                <div class="mini-card-bottom">
+                  <span class="mini-card-price">$5.500</span>
+                  <span class="mini-btn-choose">Elegir</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESKTOP -->
+    <div style="flex:1;min-width:340px">
+      <p class="screen-label">🖥️ Vista en computador</p>
+      <div class="desktop-frame">
+        <div class="desktop-topbar">
+          <div class="desktop-dot" style="background:#ff5f57"></div>
+          <div class="desktop-dot" style="background:#febc2e"></div>
+          <div class="desktop-dot" style="background:#28c840"></div>
+        </div>
+        <div class="desktop-urlbar">sushinan.vercel.app</div>
+        <div class="desktop-screen">
+          <div class="desktop-mini-header">
+            <div class="desktop-mini-logo">
+              <div class="desktop-mini-logo-box">🍣</div>
+              <span class="desktop-mini-logo-txt">Sushi Nan</span>
+            </div>
+            <div class="desktop-mini-search">🔍 Buscar productos...</div>
+            <div class="desktop-mini-cart">
+              <span style="font-size:14px">🛍</span>
+              <span class="desktop-mini-cart-txt">3 productos</span>
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,#0a0a0a,#1a0408);padding:16px;text-align:center">
+            <div style="font-size:28px;margin-bottom:4px">🍣</div>
+            <div style="color:#fff;font-size:13px;font-weight:800;letter-spacing:.05em">SUSHI NAN</div>
+            <div style="color:rgba(255,255,255,.5);font-size:9px">El sabor que prende fuego</div>
+          </div>
+          <div class="desktop-mini-cats">
+            <div class="desktop-mini-cat active">🍱 Promos Mixtas y VIP</div>
+            <div class="desktop-mini-cat">🥬 Promos Veg.</div>
+            <div class="desktop-mini-cat">🍗 Todo Pollo</div>
+            <div class="desktop-mini-cat">🍣 Rolls a la Carta</div>
+            <div class="desktop-mini-cat">🥟 Gyosas</div>
+          </div>
+          <div class="desktop-mini-sec-title">🍱 Promos Mixtas y VIP</div>
+          <div class="desktop-mini-grid">
+            <div class="desktop-mini-card">
+              <div class="desktop-mini-card-img">🍱<div class="desktop-mini-card-badge">PROMOS MIXTAS</div></div>
+              <div class="desktop-mini-card-body">
+                <div class="desktop-mini-card-name">Promo 1 — 20 Piezas</div>
+                <div class="desktop-mini-card-desc">10 Pollo, queso, cebollín (Panko) · 10 Kanikama, palta (Env. Sésamo)</div>
+                <div class="desktop-mini-card-bottom"><span class="desktop-mini-card-price">$7.500</span><span class="desktop-btn-add">+ Agregar</span></div>
+              </div>
+            </div>
+            <div class="desktop-mini-card">
+              <div class="desktop-mini-card-img">🍣<div class="desktop-mini-card-badge">PROMOS MIXTAS</div></div>
+              <div class="desktop-mini-card-body">
+                <div class="desktop-mini-card-name">Promo 2 — 20 Piezas Mix</div>
+                <div class="desktop-mini-card-desc">5 Pollo · 5 Kanikama · 5 Salmón · 5 Kanikama, palta</div>
+                <div class="desktop-mini-card-bottom"><span class="desktop-mini-card-price">$9.000</span><span class="desktop-btn-add">+ Agregar</span></div>
+              </div>
+            </div>
+            <div class="desktop-mini-card">
+              <div class="desktop-mini-card-img">🎉<div class="desktop-mini-card-badge">VIP</div></div>
+              <div class="desktop-mini-card-body">
+                <div class="desktop-mini-card-name">Promo 5 — 40 Piezas Vip</div>
+                <div class="desktop-mini-card-desc">Salmón, camarón, kanikama, champiñón...</div>
+                <div class="desktop-mini-card-bottom"><span class="desktop-mini-card-price">$16.990</span><span class="desktop-btn-add">+ Agregar</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-info" style="margin-top:8px">
+    <strong>Nota:</strong> El sitio tiene <strong>115 productos en 17 categorías</strong>. El cliente puede navegar por la barra de categorías, buscar por nombre, o marcar favoritos para encontrar rápido lo que quiere.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 3. CÓMO LLEGA UN PEDIDO -->
+<!-- ══════════════════════════════════════ -->
+<section id="pedido">
+  <div class="sec-label">3</div>
+  <h2>¿Cómo llega un pedido al local?</h2>
+  <p class="sec-intro">El cliente hace todo desde su teléfono. Al final, le llega a ustedes un mensaje de WhatsApp con todo el detalle.</p>
+
+  <div class="screens-row" style="align-items:center">
+    <!-- Celular con carrito abierto -->
+    <div>
+      <p class="screen-label">📱 El cliente arma su pedido</p>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" style="position:relative">
+          <!-- fondo del catálogo -->
+          <div class="mini-header">
+            <div class="mini-logo">
+              <div class="mini-logo-img">🍣</div>
+              <span class="mini-logo-txt">Sushi Nan</span>
+            </div>
+            <div class="mini-cart-btn">
+              <span class="mini-cart-icon">🛍</span>
+              <div class="mini-cart-num">2</div>
+            </div>
+          </div>
+          <div class="mini-grid" style="padding-top:8px">
+            <div class="mini-card" style="opacity:.4">
+              <div class="mini-card-img">🍱</div>
+              <div class="mini-card-body"><div class="mini-card-name">Promo 1</div><div class="mini-card-bottom"><span class="mini-card-price">$7.500</span></div></div>
+            </div>
+            <div class="mini-card" style="opacity:.4">
+              <div class="mini-card-img">🍣</div>
+              <div class="mini-card-body"><div class="mini-card-name">Promo 2</div><div class="mini-card-bottom"><span class="mini-card-price">$9.000</span></div></div>
+            </div>
+          </div>
+          <!-- Panel carrito -->
+          <div class="mini-cart-panel">
+            <div class="mini-cart-title">🛍 Mi pedido</div>
+            <div class="mini-cart-item">
+              <span class="mini-cart-item-name">1× Promo 1 — 20 Piezas</span>
+              <span class="mini-cart-item-price">$7.500</span>
+            </div>
+            <div class="mini-cart-item">
+              <span class="mini-cart-item-name">1× Camarón (Ciboulette)</span>
+              <span class="mini-cart-item-price">$4.200</span>
+            </div>
+            <div class="mini-cart-total">
+              <span>Total</span>
+              <span style="color:var(--rojo)">$11.700</span>
+            </div>
+            <div class="mini-form-section">
+              <div class="mini-form-title">Modalidad</div>
+              <div class="mini-modalidad">
+                <div class="mini-mod-btn active">🚗 Delivery</div>
+                <div class="mini-mod-btn">🏪 Retiro</div>
+              </div>
+              <div class="mini-form-title">Tus datos</div>
+              <input class="mini-input" readonly value="María González" style="pointer-events:none">
+              <input class="mini-input" readonly value="+56 9 8765 4321" style="pointer-events:none">
+              <div class="mini-form-title">Pago</div>
+              <div style="display:flex;gap:3px;margin-bottom:6px">
+                <div style="flex:1;text-align:center;font-size:6px;padding:3px;background:var(--negro);color:#fff;border-radius:4px">💵 Efectivo</div>
+                <div style="flex:1;text-align:center;font-size:6px;padding:3px;background:#f5f4f2;color:#555;border-radius:4px">🏦 Transfer.</div>
+                <div style="flex:1;text-align:center;font-size:6px;padding:3px;background:#f5f4f2;color:#555;border-radius:4px">💳 Tarjeta</div>
+              </div>
+              <div class="mini-btn-wsp">Pedir por WhatsApp →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:28px;flex-shrink:0">→</div>
+
+    <!-- Celular con modal de variación -->
+    <div>
+      <p class="screen-label">📱 Eligiendo variación</p>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" style="position:relative">
+          <div class="mini-header">
+            <div class="mini-logo">
+              <div class="mini-logo-img">🍣</div>
+              <span class="mini-logo-txt">Sushi Nan</span>
+            </div>
+            <div class="mini-cart-btn">
+              <span class="mini-cart-icon">🛍</span>
+              <div class="mini-cart-num">1</div>
+            </div>
+          </div>
+          <div class="mini-grid" style="padding-top:8px;opacity:.3">
+            <div class="mini-card"><div class="mini-card-img">🍱</div><div class="mini-card-body"><div class="mini-card-name">Promo 1</div></div></div>
+            <div class="mini-card"><div class="mini-card-img">🍣</div><div class="mini-card-body"><div class="mini-card-name">Roll salmón</div></div></div>
+          </div>
+          <div class="mini-modal-overlay">
+            <div class="mini-modal-card">
+              <div class="mini-modal-img">🌯</div>
+              <div class="mini-modal-name">Camarón tempura, queso, cebollín o palta</div>
+              <div class="mini-modal-desc">Elige una opción para agregar al pedido</div>
+              <div class="mini-modal-var-title">Elige una opción</div>
+              <div class="mini-var-row">
+                <span class="mini-var-btn">Cebollín · $4.200</span>
+                <span class="mini-var-btn sel">Palta · $5.000</span>
+                <span class="mini-var-btn">Tempura · $5.200</span>
+                <span class="mini-var-btn">Queso · $5.500</span>
+                <span class="mini-var-btn">Salmón · $6.000</span>
+              </div>
+              <div class="mini-modal-bottom">
+                <span class="mini-modal-price">$5.000</span>
+                <button class="mini-btn-add2">Agregar al pedido</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Paso a paso del cliente</h3>
+  <ol class="pasos">
+    <li>
+      <div class="paso-num">1</div>
+      <div class="paso-txt">
+        <strong>Entra al sitio web</strong>
+        Ve el menú completo con fotos, precios y descripciones de todos los productos.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">2</div>
+      <div class="paso-txt">
+        <strong>Agrega al carrito</strong>
+        Con el botón "+ Agregar". Si el producto tiene opciones (rellenos, tamaños), se abre una pantalla para elegir.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">3</div>
+      <div class="paso-txt">
+        <strong>Abre el carrito y elige cómo quiere recibirlo</strong>
+        Delivery (a domicilio) o Retiro en el local. Si elige Delivery, elige la comuna y aparece el costo de envío automáticamente.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">4</div>
+      <div class="paso-txt">
+        <strong>Completa su nombre y teléfono</strong>
+        Son los únicos campos obligatorios. Puede guardarlos para no escribirlos la próxima vez.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">5</div>
+      <div class="paso-txt">
+        <strong>Elige cómo va a pagar</strong>
+        Efectivo, transferencia o tarjeta. Si elige transferencia, aparecen los datos bancarios del local automáticamente.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">6</div>
+      <div class="paso-txt">
+        <strong>Clic en "Pedir por WhatsApp"</strong>
+        Ve un resumen final de su pedido para revisar antes de enviar.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">7</div>
+      <div class="paso-txt">
+        <strong>Confirma y se abre WhatsApp</strong>
+        El mensaje con todo el detalle del pedido ya está escrito. Solo tiene que presionar "Enviar".
+      </div>
+    </li>
+  </ol>
+</section>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 4. EJEMPLO MENSAJE WHATSAPP -->
+<!-- ══════════════════════════════════════ -->
+<section id="wsp-ejemplo">
+  <div class="sec-label">4</div>
+  <h2>¿Cómo llega el mensaje al local?</h2>
+  <p class="sec-intro">Así se ve el mensaje que recibe el local por WhatsApp cuando un cliente hace un pedido:</p>
+
+  <div class="screens-row" style="justify-content:center">
+    <div style="flex:0 0 320px">
+      <p class="screen-label">📲 Mensaje que recibe el local</p>
+      <div class="wsp-screen">
+        <div class="wsp-header">
+          <div class="wsp-avatar">🍣</div>
+          <div class="wsp-contact">
+            <div class="wsp-contact-name">Cliente — María González</div>
+            <div class="wsp-contact-status">En línea</div>
+          </div>
+        </div>
+        <div class="wsp-body">
+          <div class="wsp-bubble">
+<strong>NUEVO PEDIDO — Sushi Nan</strong>
+
+• 1× Promo 1 — 20 Piezas
+  $7.500
+• 1× Camarón (Palta)
+  $5.000
+
+Subtotal: $12.500
+Envío (Recoleta): $1.500
+<strong>TOTAL: $14.000</strong>
+
+Modalidad: Delivery
+Pago: Efectivo al momento de la entrega
+Nombre: María González
+Teléfono: +56 9 8765 4321
+Dirección: Los Álamos 123, Recoleta
+Horario solicitado: Lo antes posible
+Palillos: 2 pares
+Preferencia: Sin wasabi
+
+Tiempo estimado informado: 45–60 minutos</div>
+          <div class="wsp-time">12:34 ✓✓</div>
+        </div>
+        <div class="wsp-input-bar">
+          <div class="wsp-input">Escribe un mensaje...</div>
+          <div class="wsp-send">📤</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;min-width:220px">
+      <h3 style="margin-top:0">El mensaje siempre incluye</h3>
+      <ul class="check">
+        <li>Lista de productos con cantidades y precios</li>
+        <li>Subtotal + costo de envío + total final</li>
+        <li>Nombre y teléfono del cliente</li>
+        <li>Tipo de pedido (Delivery o Retiro)</li>
+        <li>Dirección de entrega si es Delivery</li>
+        <li>Forma de pago elegida</li>
+        <li>Cantidad de palillos solicitada</li>
+        <li>Preferencias (sin soya, sin wasabi)</li>
+        <li>Notas adicionales del cliente</li>
+        <li>Fecha y hora si es pedido programado</li>
+      </ul>
+      <div class="callout callout-ok" style="margin-top:16px">
+        <strong>El local solo tiene que responder el mensaje</strong> para confirmar el pedido. No hay que aprender ningún programa nuevo.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 5. FUNCIONES DEL CLIENTE -->
+<!-- ══════════════════════════════════════ -->
+<section id="funciones">
+  <div class="sec-label">5</div>
+  <h2>Todo lo que puede hacer el cliente</h2>
+  <p class="sec-intro">El sitio tiene varias funciones pensadas para que el cliente pida más fácil y más seguido.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h4 style="margin-top:0">🔍 Buscar productos</h4>
+      <p>El cliente escribe cualquier palabra (ej: "salmón") y el menú filtra automáticamente mientras escribe, sin recargar la página.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">♥ Guardar favoritos</h4>
+      <p>Puede marcar productos con el corazón para guardarlos. Con el botón de filtro puede ver solo sus favoritos.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">🔄 Repetir último pedido</h4>
+      <p>La próxima vez que entra al sitio, puede repetir el pedido anterior con un solo clic. Muy útil para clientes habituales.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">📅 Programar para más tarde</h4>
+      <p>Puede elegir una fecha y hora de entrega específica. El sistema solo muestra horarios disponibles del local (no deja elegir domingos ni horarios fuera de atención).</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">💾 Recordar sus datos</h4>
+      <p>Si marca "Recordar mis datos", la próxima vez que entre su nombre, teléfono y dirección ya están escritos. Se borran automáticamente después de 30 días.</p>
+    </div>
+    <div class="card">
+      <h4 style="margin-top:0">↗ Compartir productos</h4>
+      <p>Puede compartir cualquier producto por WhatsApp, Instagram o como enlace copiado. Bueno para cuando le preguntan qué pidió.</p>
+    </div>
+  </div>
+
+  <h3>El constructor "Arma tu Roll"</h3>
+  <div class="screens-row" style="align-items:flex-start;gap:20px">
+    <div style="flex:0 0 200px">
+      <p class="screen-label">📱 Arma tu Roll</p>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" style="position:relative">
+          <div class="mini-header">
+            <div class="mini-logo">
+              <div class="mini-logo-img">🍣</div>
+              <span class="mini-logo-txt">Sushi Nan</span>
+            </div>
+          </div>
+          <div style="height:80px;background:linear-gradient(135deg,#111,#333);display:flex;align-items:center;justify-content:center;font-size:32px">⭐</div>
+          <div style="padding:10px">
+            <div style="font-size:10px;font-weight:800;color:#111;margin-bottom:3px">Arma tu Roll</div>
+            <div style="font-size:7px;color:#888;margin-bottom:8px">Personaliza tu propio roll</div>
+            <div style="font-size:7px;font-weight:700;color:#aaa;text-transform:uppercase;margin-bottom:4px">Elige 3 ingredientes</div>
+            <div style="font-size:8px;color:var(--rojo);font-weight:700;margin-bottom:6px">2 / 3 ingredientes</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:8px">
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;background:var(--negro);color:#fff">Camarón</span>
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;background:var(--negro);color:#fff">Salmón</span>
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;border:1px solid #ddd;color:#555">Pollo</span>
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;border:1px solid #ddd;color:#555">Kanikama</span>
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;border:1px solid #ddd;color:#555">Calamar</span>
+            </div>
+            <div style="font-size:7px;font-weight:700;color:#aaa;text-transform:uppercase;margin-bottom:4px">Elige envoltura</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:10px">
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;background:var(--negro);color:#fff">Alga</span>
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;border:1px solid #ddd;color:#555">Sésamo</span>
+              <span style="font-size:6px;padding:2px 6px;border-radius:8px;border:1px solid #ddd;color:#555">Palta</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12px;font-weight:800;color:var(--rojo)">$5.500</span>
+              <span style="font-size:7px;background:#ccc;color:#888;padding:4px 8px;border-radius:5px">Elige 1 más</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1">
+      <p>El cliente puede armar su propio roll eligiendo exactamente 3 ingredientes de la lista y luego la envoltura. El sitio:</p>
+      <ul class="check" style="margin-top:8px">
+        <li>Va contando cuántos ingredientes ha elegido (ej: "2 / 3 ingredientes")</li>
+        <li>No deja agregar al carrito hasta que elija los 3</li>
+        <li>El detalle de lo que eligió queda incluido en el mensaje de WhatsApp</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Pedidos programados — con restricción de horario</h3>
+  <div class="card card-verde">
+    <p>Si el cliente activa "Programar pedido", el sistema <strong>solo le deja elegir fechas y horas en las que el local atiende</strong>:</p>
+    <ul class="check" style="margin-top:8px">
+      <li>No puede elegir domingo (el local no atiende ese día)</li>
+      <li>No puede elegir horas antes de las 12:15 ni después del horario de cierre</li>
+      <li>El horario permitido aparece automáticamente debajo del campo de hora</li>
+      <li>Si elige mal, el campo se pone rojo con un aviso claro</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 6. ACTUALIZAR EL MENÚ -->
+<!-- ══════════════════════════════════════ -->
+<section id="catalogo">
+  <div class="sec-label">6</div>
+  <h2>Cómo actualizar el menú</h2>
+  <p class="sec-intro">Todo el menú se maneja desde un solo archivo de texto. No es necesario saber programar, pero sí hay que tener cuidado con el formato.</p>
+
+  <div class="callout callout-info">
+    <strong>El archivo a editar:</strong> <code>sushinan/data/products.json</code><br>
+    En este archivo está todo: los productos, precios, categorías, costos de envío, datos bancarios y horarios del local.
+  </div>
+
+  <h3>¿Qué se puede cambiar?</h3>
+  <table>
+    <tr><th>Qué quiero cambiar</th><th>Dónde está en el archivo</th></tr>
+    <tr><td>Precio de un producto</td><td>El campo <code>"precio"</code> del producto. Solo números, sin puntos ni comas (ej: <code>5500</code>)</td></tr>
+    <tr><td>Nombre de un producto</td><td>El campo <code>"nombre"</code></td></tr>
+    <tr><td>Descripción de un producto</td><td>El campo <code>"descripcion"</code></td></tr>
+    <tr><td>Marcar como agotado</td><td>Agregar <code>"disponible": false</code> al producto</td></tr>
+    <tr><td>Reactivar un producto agotado</td><td>Cambiar a <code>"disponible": true</code> o eliminar ese campo</td></tr>
+    <tr><td>Costo de envío por comuna</td><td>En <code>"costos_envio"</code>, cambiar el número de la comuna</td></tr>
+    <tr><td>Datos bancarios para transferencia</td><td>En <code>"pago_transferencia"</code></td></tr>
+    <tr><td>Horario del local</td><td>En <code>"horario"</code> (texto del footer) y en <code>"horarios_pedido"</code> (horarios reales para validar pedidos)</td></tr>
+    <tr><td>Teléfono de WhatsApp donde llegan los pedidos</td><td>En <code>"telefono_whatsapp"</code> (solo números, sin + ni espacios)</td></tr>
+  </table>
+
+  <h3>Agregar un producto nuevo</h3>
+  <ol class="pasos">
+    <li>
+      <div class="paso-num">1</div>
+      <div class="paso-txt">
+        <strong>Abrir el archivo</strong>
+        Buscar <code>sushinan/data/products.json</code> y abrirlo con el bloc de notas o VS Code.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">2</div>
+      <div class="paso-txt">
+        <strong>Encontrar la categoría</strong>
+        Buscar el texto <code>"id": "rolls-carta"</code> (u otra categoría) para ubicarse.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">3</div>
+      <div class="paso-txt">
+        <strong>Agregar el nuevo producto</strong>
+        Al final de la lista de productos de esa categoría, agregar una coma después del último y luego el nuevo:
+      </div>
+    </li>
+  </ol>
+
+  <div class="bloque-codigo">{
+  <span class="ck">"id"</span>: <span class="cs">"roll-nuevo-001"</span>,   <span class="cm">← debe ser único, sin espacios</span>
+  <span class="ck">"nombre"</span>: <span class="cs">"Roll Especial"</span>,
+  <span class="ck">"descripcion"</span>: <span class="cs">"Salmón, palta, queso crema"</span>,
+  <span class="ck">"precio"</span>: 5500,             <span class="cm">← solo números, sin puntos ni comas</span>
+  <span class="ck">"imagen"</span>: <span class="cs">"img/optimized/rolls/roll-especial.jpg"</span>
+}</div>
+
+  <ol class="pasos">
+    <li>
+      <div class="paso-num">4</div>
+      <div class="paso-txt">
+        <strong>Agregar la foto del producto</strong>
+        Ponerla en la carpeta <code>img/optimized/</code> dentro de la categoría correspondiente. Tamaño mínimo recomendado: 600×360 píxeles.
+      </div>
+    </li>
+    <li>
+      <div class="paso-num">5</div>
+      <div class="paso-txt">
+        <strong>Verificar que no hay errores</strong>
+        Correr el comando <code>node scripts/validar-catalogo.js</code> — si hay algún error de formato, lo detecta antes de publicar.
+      </div>
+    </li>
+  </ol>
+
+  <h3>Marcar un producto como agotado</h3>
+  <div class="card card-naranja">
+    <p>Agregar <code>"disponible": false</code> al producto. En el sitio aparecerá con la etiqueta "AGOTADO" y el botón desactivado. Para reactivarlo, cambiar a <code>true</code> o borrar esa línea.</p>
+    <div class="bloque-codigo">{
+  <span class="ck">"id"</span>: <span class="cs">"promo-1"</span>,
+  <span class="ck">"nombre"</span>: <span class="cs">"Promo 1 — 20 Piezas"</span>,
+  <span class="ck">"precio"</span>: 7500,
+  <span class="ck">"disponible"</span>: false,   <span class="cm">← agrega esta línea para marcarlo agotado</span>
+  <span class="ck">"imagen"</span>: <span class="cs">"img/..."</span>
+}</div>
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>Cuidado con el formato:</strong> El archivo JSON es muy estricto. Si falta una coma o un signo de comillas, el sitio deja de funcionar para todos los clientes. Siempre correr el validador (<code>node scripts/validar-catalogo.js</code>) antes de publicar un cambio.
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 7. PUBLICAR CAMBIOS -->
+<!-- ══════════════════════════════════════ -->
+<section id="publicar">
+  <div class="sec-label">7</div>
+  <h2>Cómo publicar cambios al sitio</h2>
+  <p class="sec-intro">Después de editar cualquier archivo, hay que publicarlo para que los cambios se vean en el sitio real. Son 3 comandos simples.</p>
+
+  <div class="card card-verde">
+    <ol class="pasos">
+      <li>
+        <div class="paso-num">1</div>
+        <div class="paso-txt">
+          <strong>Validar que todo está bien</strong>
+          <code>node scripts/validar-catalogo.js</code><br>
+          Si aparece "✓ Todo OK", continuar. Si hay errores, corregirlos primero.
+        </div>
+      </li>
+      <li>
+        <div class="paso-num">2</div>
+        <div class="paso-txt">
+          <strong>Guardar los cambios en Git</strong>
+          <code>git add . && git commit -m "descripción del cambio"</code><br>
+          Ejemplo: <code>git commit -m "subo precio promo 1 a $8.000"</code>
+        </div>
+      </li>
+      <li>
+        <div class="paso-num">3</div>
+        <div class="paso-txt">
+          <strong>Publicar</strong>
+          <code>git push</code><br>
+          Listo. En aproximadamente 30 segundos el sitio web ya muestra los cambios.
+        </div>
+      </li>
+    </ol>
+  </div>
+
+  <div class="callout callout-info">
+    <strong>¿Cómo sé que se publicó?</strong> Entrar al panel de Vercel (vercel.com) o simplemente recargar el sitio web desde el teléfono. Si el cambio se ve, está publicado.
+  </div>
+
+  <h3>Si quiero cambiar solo un precio</h3>
+  <p>Es exactamente el mismo proceso: editar el número en el JSON, validar, commit y push. En menos de 2 minutos el precio nuevo ya aparece en el sitio para todos los clientes.</p>
+</section>
+
+
+<!-- ══════════════════════════════════════ -->
+<!-- 8. COSTOS -->
+<!-- ══════════════════════════════════════ -->
+<section id="costos">
+  <div class="sec-label">8</div>
+  <h2>Costos del sistema</h2>
+  <p class="sec-intro">El sistema está diseñado para que el local gaste lo mínimo posible.</p>
+
+  <table>
+    <tr><th>Qué</th><th>Costo mensual</th><th>Notas</th></tr>
+    <tr>
+      <td><strong>Hosting del sitio web</strong><br><span style="font-size:12px;color:#888">Vercel (plan gratuito)</span></td>
+      <td><span class="badge badge-ok">$0 — Gratis</span></td>
+      <td>Soporta hasta 100 GB de visitas al mes. Más que suficiente para un restaurante.</td>
+    </tr>
+    <tr>
+      <td><strong>HTTPS (candado de seguridad)</strong></td>
+      <td><span class="badge badge-ok">$0 — Gratis</span></td>
+      <td>Incluido automáticamente en Vercel.</td>
+    </tr>
+    <tr>
+      <td><strong>Integración con WhatsApp</strong></td>
+      <td><span class="badge badge-ok">$0 — Gratis</span></td>
+      <td>Usa el enlace público de WhatsApp (wa.me), no la API de pago.</td>
+    </tr>
+    <tr>
+      <td><strong>Dominio personalizado</strong><br><span style="font-size:12px;color:#888">ej: pedidos.sushinan.cl</span></td>
+      <td>$9.990 CLP/año<br><span style="font-size:11px;color:#888">Fuente: NIC.cl · exento IVA</span></td>
+      <td>Opcional. Sin dominio propio, el sitio queda en una dirección de Vercel. Se contrata directamente en <strong>nic.cl</strong>.</td>
+    </tr>
+    <tr>
+      <td><strong>Comisión por pedido</strong></td>
+      <td><span class="badge badge-ok">$0 — Gratis</span></td>
+      <td>A diferencia de Rappi o PedidosYa, aquí no hay comisión por ningún pedido.</td>
+    </tr>
+    <tr>
+      <td><strong>Desarrollo del sistema</strong><br><span style="font-size:12px;color:#888">Pago único · no se repite</span></td>
+      <td>$100.000 CLP<br><span style="font-size:11px;color:#888">Pago único</span></td>
+      <td>
+        $50.000 CLP en transferencia al inicio del proyecto<br>
+        $50.000 CLP en consumo en el local<br>
+        <span style="font-size:12px;color:#888">Pago único. No hay cobro mensual fijo.</span>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Mantención y mejoras</strong><br><span style="font-size:12px;color:#888">Opcional · según necesidad</span></td>
+      <td>$20.000 – $50.000 CLP<br><span style="font-size:11px;color:#888">por solicitud</span></td>
+      <td>
+        Si en algún momento se necesita agregar productos, crear nuevas funciones, hacer cambios de diseño o cualquier mejora al sistema, el valor es <strong>desde $20.000 hasta $50.000 CLP</strong> dependiendo de lo que se requiera.<br>
+        <span style="font-size:12px;color:#888">Solo se cobra cuando el local lo solicita. Sin contratos ni compromisos mensuales.</span>
+      </td>
+    </tr>
+  </table>
+
+  <div class="callout callout-ok">
+    <strong>Costo total del primer año:</strong> $100.000 CLP (desarrollo) + $9.990 CLP (dominio opcional) = <strong>~$110.000 CLP</strong> para tener el sistema propio funcionando un año completo.
+  </div>
+
+  <div class="callout callout-ok">
+    <strong>Comparación con Rappi:</strong> Rappi cobra entre 25–35% de comisión por pedido. Si el local vende $500.000 al mes por delivery, estaría pagando entre $125.000 y $175.000 <em>solo en comisiones mensuales</em>. Con este sistema, el costo total del primer año es menor que <strong>un mes de comisiones</strong> en cualquier app de delivery.
+  </div>
+</section>
+
+<hr class="divisor">
+
+<div class="doc-footer">
+  <p>Guía preparada en junio 2026 · Sistema de pedidos online Sushi Nan</p>
+  <p style="margin-top:4px">Cualquier duda, contactar al equipo de desarrollo.</p>
+</div>
+
+</body>
+</html>
