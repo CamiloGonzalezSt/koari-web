@@ -1,6 +1,7 @@
 // data.js
 // Carga el JSON de productos y negocio. Reemplazar data/products.json
 // con los datos reales (precios, fotos, categorías) cuando el cliente los entregue.
+import { aplicarPromocionesProgramadas } from './modules/promociones-programadas.js';
 
 export let DATA = null;
 
@@ -12,6 +13,7 @@ export async function cargarDatos() {
     if (!DATA?.negocio || !Array.isArray(DATA?.categorias)) {
       throw new Error('El catálogo tiene un formato inválido');
     }
+    aplicarPromocionesProgramadas(DATA);
     return DATA;
   } catch (err) {
     console.error('Error cargando datos:', err);

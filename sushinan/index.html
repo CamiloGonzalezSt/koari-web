@@ -76,7 +76,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=50">
+  <link rel="stylesheet" href="css/styles.css?v=51">
 </head>
 <body>
 
@@ -323,10 +323,14 @@
       <div class="modal-info">
         <h2 class="modal-nombre" id="modal-nombre"></h2>
         <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-promocion" id="modal-promocion" hidden></div>
         <p class="modal-disponibilidad" id="modal-disponibilidad" hidden></p>
         <div class="modal-variaciones" id="modal-variaciones"></div>
         <div class="modal-bottom">
-          <span class="modal-precio" id="modal-precio"></span>
+          <span class="modal-precios">
+            <span class="modal-precio-anterior" id="modal-precio-anterior" hidden></span>
+            <span class="modal-precio" id="modal-precio"></span>
+          </span>
           <div class="modal-controles" id="modal-controles"></div>
         </div>
       </div>
@@ -404,6 +408,6 @@
     </div>
   </footer>
 
-  <script type="module" src="js/app.js?v=30"></script>
+  <script type="module" src="js/app.js?v=31"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
-import { DATA } from '../data.js?v=8';
-import { carrito, formatearPrecio } from '../cart.js?v=8';
+import { DATA } from '../data.js?v=9';
+import { carrito, formatearPrecio } from '../cart.js?v=9';
 import { escaparHtml, fechaChileISO, horaChile, normalizarTelefono, mantenerFoco, bloquearScroll, desbloquearScroll } from './utils.js';
 import { borrarDatosLocales, guardarConCaducidad, leerConCaducidad } from './storage.js';
 import { obtenerInfoHorario, textoProximaAtencion, validarProgramacion } from './horarios.js';

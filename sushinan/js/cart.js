@@ -1,7 +1,7 @@
 // cart.js
 // Lógica del carrito: estado en memoria (sin localStorage por restricción de artifacts,
 // pero en producción real fuera de artifacts SÍ se puede usar localStorage para persistencia).
-import { DATA } from './data.js?v=8';
+import { DATA } from './data.js?v=9';
 
 export const carrito = {
   items: {}, // { productoId: { producto, cantidad } }
@@ -24,6 +24,7 @@ export const carrito = {
             item.cantidad > 0 && item.cantidad <= 99;
         })
       );
+      this.sincronizarPrecios(false);
     } catch (err) {
       console.warn('No fue posible restaurar el carrito:', err);
       localStorage.removeItem('sushinan-carrito');
@@ -40,6 +41,30 @@ export const carrito = {
     } catch (err) {
       console.warn('No fue posible guardar el carrito:', err);
     }
+  },
+
+  sincronizarPrecios(notificar = true) {
+    const catalogo = new Map(DATA.categorias.flatMap(c => c.productos).map(p => [p.id, p]));
+    let cambio = false;
+    Object.values(this.items).forEach(item => {
+      const idBase = item.producto.id.split('__')[0];
+      const productoActual = catalogo.get(idBase);
+      if (!productoActual?.promocionProgramada || item.producto.id !== idBase) return;
+      if (item.producto.precio !== productoActual.precio ||
+          item.producto.promocionProgramada?.activa !== productoActual.promocionProgramada.activa) {
+        item.producto = {
+          ...item.producto,
+          precio: productoActual.precio,
+          promocionProgramada: { ...productoActual.promocionProgramada }
+        };
+        cambio = true;
+      }
+    });
+    if (cambio) {
+      this.guardar();
+      if (notificar) document.dispatchEvent(new CustomEvent('carrito:actualizado'));
+    }
+    return cambio;
   },
 
   agregar(producto, origen = null) {

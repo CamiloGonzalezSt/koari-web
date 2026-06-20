@@ -1,9 +1,10 @@
 // app.js — Orquestador principal. Importa módulos y wirea eventos globales.
-import { DATA, cargarDatos } from './data.js?v=8';
-import { carrito } from './cart.js?v=8';
-import { cargarFavoritos, inicializarBusqueda } from './modules/favoritos.js';
+import { DATA, cargarDatos } from './data.js?v=9';
+import { carrito } from './cart.js?v=9';
+import { cargarFavoritos, filtrarProductos, inicializarBusqueda } from './modules/favoritos.js';
 import { inicializarMicrointeracciones, inicializarObservadoresVisuales } from './modules/ui.js';
-import { inicializarModal, inicializarEnlacesProductos } from './modules/modal.js';
+import { inicializarModal, inicializarEnlacesProductos, refrescarModalAbierto } from './modules/modal.js';
+import { iniciarRelojPromociones } from './modules/promociones-programadas.js';
 import {
   renderHero, renderHeader, renderFooter,
   renderNavCategorias, renderProductos, renderBotonesCantidad
@@ -49,4 +50,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   inicializarObservadoresVisuales();
   inicializarConfirmacion();
   inicializarEnlacesProductos();
+
+  iniciarRelojPromociones(DATA, () => {
+    carrito.sincronizarPrecios(false);
+    carrito.actualizar();
+    renderProductos();
+    filtrarProductos(document.getElementById('busqueda-input')?.value.trim().toLowerCase() || '');
+    inicializarObservadoresVisuales();
+    refrescarModalAbierto();
+  });
 });

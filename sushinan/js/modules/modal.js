@@ -1,5 +1,5 @@
-import { DATA } from '../data.js?v=8';
-import { carrito, formatearPrecio } from '../cart.js?v=8';
+import { DATA } from '../data.js?v=9';
+import { carrito, formatearPrecio } from '../cart.js?v=9';
 import { CATEGORIA_TIPO, generarImagenProducto } from '../placeholders.js?v=3';
 import { escaparHtml } from './utils.js';
 import { mantenerFoco, bloquearScroll, desbloquearScroll } from './utils.js';
@@ -17,6 +17,13 @@ let armaTuRollEnvoltura   = null;
 let focoAnterior          = null;
 
 export const getModalProductoActual = () => modalProductoActual;
+
+export function refrescarModalAbierto() {
+  if (!modalProductoActual) return;
+  actualizarPromocionModal(modalProductoActual);
+  actualizarModalPrecio();
+  renderModalControles(modalProductoActual);
+}
 
 export function inicializarModal() {
   document.getElementById('modal-cerrar').addEventListener('click', cerrarModal);
@@ -65,6 +72,8 @@ export function abrirModal(producto, actualizarUrl = true) {
   document.getElementById('modal-img').src              = srcModal;
   document.getElementById('modal-nombre').textContent   = producto.nombre;
   document.getElementById('modal-desc').textContent     = producto.descripcion || '';
+
+  actualizarPromocionModal(producto);
 
   const requiereConsulta = catDelProducto?.id === 'bebidas' ||
     /\b(bebida|jugo|lata)\b/i.test(`${producto.nombre} ${producto.descripcion || ''}`);
@@ -167,6 +176,15 @@ export function renderModalControles(producto) {
 
 // ── Internos ────────────────────────────────────────────────────────────────
 
+function actualizarPromocionModal(producto) {
+  const promo = producto.promocionProgramada?.activa ? producto.promocionProgramada : null;
+  const promoEl = document.getElementById('modal-promocion');
+  promoEl.hidden = !promo;
+  promoEl.innerHTML = promo
+    ? `<strong>${promo.descuento}% de descuento</strong><span>${escaparHtml(promo.vigencia)}</span>`
+    : '';
+}
+
 function actualizarModalPrecio() {
   let precio = 0;
   if (modalProductoActual?.armaTuRoll) {
@@ -179,6 +197,12 @@ function actualizarModalPrecio() {
     precio = modalVariacionActual.precio;
   }
   document.getElementById('modal-precio').textContent = formatearPrecio(precio);
+  const anterior = document.getElementById('modal-precio-anterior');
+  const promo = !modalVariacionActual && modalProductoActual?.promocionProgramada?.activa
+    ? modalProductoActual.promocionProgramada
+    : null;
+  anterior.hidden = !promo;
+  anterior.textContent = promo ? formatearPrecio(promo.precioRegular) : '';
 }
 
 function renderModalVariaciones(producto) {

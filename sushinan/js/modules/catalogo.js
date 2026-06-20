@@ -1,5 +1,5 @@
-import { DATA } from '../data.js?v=8';
-import { carrito } from '../cart.js?v=8';
+import { DATA } from '../data.js?v=9';
+import { carrito, formatearPrecio } from '../cart.js?v=9';
 import { CATEGORIA_TIPO, generarImagenProducto } from '../placeholders.js?v=3';
 import { escaparHtml } from './utils.js';
 import { tieneVariaciones, precioCardTexto, productoConVariacion, badgeClase } from './producto-utils.js';
@@ -170,6 +170,7 @@ function crearCardProducto(producto, categoria) {
   const badgeTexto = producto.disponible === false ? 'AGOTADO' : (producto.badge || categoria.nombre);
   const tipoIlo    = CATEGORIA_TIPO[categoria.id] || 'platter';
   const srcImg     = generarImagenProducto(producto, categoria.nombre, tipoIlo);
+  const promo      = producto.promocionProgramada?.activa ? producto.promocionProgramada : null;
 
   card.innerHTML = `
     <div class="producto-card__img-wrap cargando">
@@ -188,9 +189,17 @@ function crearCardProducto(producto, categoria) {
     </div>
     <div class="producto-card__info">
       <div class="producto-card__nombre">${escaparHtml(producto.nombre)}</div>
+      ${promo ? `
+        <div class="producto-card__promo" aria-label="${promo.descuento}% de descuento. ${escaparHtml(promo.vigencia)}">
+          <span class="producto-card__promo-descuento">${promo.descuento}% de descuento</span>
+          <span class="producto-card__promo-vigencia">${escaparHtml(promo.vigencia)}</span>
+        </div>` : ''}
       ${producto.descripcion ? `<div class="producto-card__desc">${escaparHtml(producto.descripcion)}</div>` : ''}
       <div class="producto-card__bottom">
-        <span class="producto-card__precio">${precioCardTexto(producto)}</span>
+        <span class="producto-card__precios">
+          ${promo ? `<span class="producto-card__precio-anterior">${formatearPrecio(promo.precioRegular)}</span>` : ''}
+          <span class="producto-card__precio">${precioCardTexto(producto)}</span>
+        </span>
         <div class="controles-${escaparHtml(producto.id)}"></div>
       </div>
     </div>`;

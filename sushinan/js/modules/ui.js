@@ -1,4 +1,4 @@
-import { carrito } from '../cart.js?v=8';
+import { carrito } from '../cart.js?v=9';
 
 let toastTimer = null;
 
