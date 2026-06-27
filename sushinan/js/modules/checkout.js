@@ -6,10 +6,12 @@ import { obtenerInfoHorario, textoProximaAtencion, validarProgramacion } from '.
 import { mostrarAvisoSimple } from './ui.js';
 import { actualizarUIFavoritos, filtrarProductos, resetFavoritos } from './favoritos.js';
 import { renderBotonesCantidad } from './catalogo.js';
+import { crearIdPedido, enviarPedidoGenerado } from './tracking-pedidos.js';
 
 let pagoMetodo       = 'efectivo';
 let modalidadPedido  = 'delivery';
 let pedidoPendienteUrl = '';
+let pedidoPendienteTracking = null;
 let ultimoTotalRender  = null;
 let focoAnterior       = null;
 
@@ -375,6 +377,7 @@ export function inicializarConfirmacion() {
   document.getElementById('confirmacion-continuar').addEventListener('click', () => {
     if (!pedidoPendienteUrl) return;
     guardarUltimoPedidoConfirmado();
+    enviarPedidoGenerado(pedidoPendienteTracking);
     const ventana = window.open(pedidoPendienteUrl, '_blank');
     if (ventana) ventana.opener = null;
     cerrarConfirmacion();
@@ -493,8 +496,9 @@ function actualizarPanelPago() {
   document.getElementById('transferencia-panel').classList.toggle('visible', pagoMetodo === 'transferencia');
 }
 
-function abrirConfirmacion(url, resumen) {
+function abrirConfirmacion(url, resumen, trackingPayload) {
   pedidoPendienteUrl = url;
+  pedidoPendienteTracking = trackingPayload;
   focoAnterior       = document.activeElement;
   document.getElementById('toast-carrito').classList.remove('visible');
 
@@ -527,6 +531,7 @@ function cerrarConfirmacion() {
   overlay.classList.remove('activo');
   overlay.setAttribute('aria-hidden', 'true');
   pedidoPendienteUrl = '';
+  pedidoPendienteTracking = null;
   if (!document.getElementById('carrito-panel').classList.contains('abierto') &&
       !document.getElementById('modal-overlay').classList.contains('activo'))
     desbloquearScroll();
@@ -598,6 +603,20 @@ function enviarPedidoWhatsapp() {
     `• ${cantidad}× ${producto.nombre}\n  ${formatearPrecio(producto.precio * cantidad)}`
   ).join('\n');
   const modalidadTexto = modalidadPedido === 'retiro' ? 'Retiro en local' : 'Delivery';
+  const productosResumen = entries.map(({ producto, cantidad }) => ({
+    id: producto.id,
+    nombre: producto.nombre,
+    cantidad,
+    precioUnitario: producto.precio,
+    total: producto.precio * cantidad,
+    promocion: producto.promocionProgramada?.activa ? {
+      activa: true,
+      descuento: producto.promocionProgramada.descuento,
+      precioRegular: producto.promocionProgramada.precioRegular,
+      precioOferta: producto.promocionProgramada.precioOferta,
+      vigencia: producto.promocionProgramada.vigencia
+    } : null
+  }));
 
   let msg = `*NUEVO PEDIDO — ${DATA.negocio.nombre}*\n\n`;
   msg += `${detalle}\n\n`;
@@ -627,12 +646,32 @@ function enviarPedidoWhatsapp() {
 
   const url = `https://wa.me/${DATA.negocio.telefono_whatsapp}?text=${encodeURIComponent(msg)}`;
   abrirConfirmacion(url, {
-    productos: entries.map(({ producto, cantidad }) => ({
-      nombre: producto.nombre, cantidad, total: producto.precio * cantidad
-    })),
+    productos: productosResumen,
     modalidad:     modalidadTexto,
     programacion:  programarPedido ? `${fechaPedido} · ${horaPedido}` : 'Lo antes posible',
     pago:          textoPago[pagoMetodo],
     total:         totalConEnvio
+  }, {
+    orderId:       crearIdPedido(),
+    modalidad:     modalidadTexto,
+    comuna:        modalidadPedido === 'delivery' ? comuna : '',
+    pago:          textoPago[pagoMetodo],
+    programacion:  {
+      tipo:  programarPedido ? 'programado' : 'lo_antes_posible',
+      fecha: programarPedido ? fechaPedido : '',
+      hora:  programarPedido ? horaPedido : ''
+    },
+    subtotal,
+    envio:         costoEnvio,
+    total:         totalConEnvio,
+    cantidadItems: carrito.getTotalItems(),
+    incluyeBebidas,
+    preferencias:  {
+      palillos,
+      sinSoya,
+      sinWasabi,
+      notaCliente: Boolean(nota)
+    },
+    items:         productosResumen
   });
 }

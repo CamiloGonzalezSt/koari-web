@@ -14,7 +14,7 @@ import {
   inicializarModalidad, inicializarFormularioCliente, inicializarPrivacidad,
   inicializarProgramacionPedido, inicializarUltimoPedido, inicializarPago,
   inicializarConfirmacion, inicializarWspFlotante
-} from './modules/checkout.js';
+} from './modules/checkout.js?v=2';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarDatos();
