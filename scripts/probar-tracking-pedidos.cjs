@@ -1,7 +1,8 @@
 const assert = require('assert/strict');
 const handler = require('../api/pedidos.js');
+const handlerCarpetaSitio = require('../sushinan/api/pedidos.js');
 
-async function llamar(req) {
+async function llamar(req, funcion = handler) {
   const res = {
     statusCode: 200,
     headers: {},
@@ -12,7 +13,7 @@ async function llamar(req) {
     json(payload) { this.body = payload; return this; },
     end() { this.ended = true; return this; }
   };
-  await handler({ headers: {}, ...req }, res);
+  await funcion({ headers: {}, ...req }, res);
   return res;
 }
 
@@ -93,6 +94,10 @@ function pedidoValido(extra = {}) {
   global.fetch = fetchOriginal;
   delete process.env.PEDIDOS_WEBHOOK_URL;
   delete process.env.PEDIDOS_WEBHOOK_SECRET;
+
+  res = await llamar({ method: 'POST', body: pedidoValido({ orderId: 'SN-TEST-CARPETA-SITIO' }) }, handlerCarpetaSitio);
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.skipped, true);
 
   console.log('Seguimiento de pedidos: pruebas OK');
 })().catch(error => {
