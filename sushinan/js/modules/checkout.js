@@ -7,6 +7,11 @@ import { mostrarAvisoSimple } from './ui.js';
 import { actualizarUIFavoritos, filtrarProductos, resetFavoritos } from './favoritos.js';
 import { renderBotonesCantidad } from './catalogo.js';
 import { crearIdPedido, enviarPedidoGenerado } from './tracking-pedidos.js';
+import {
+  prepararClienteBeneficio,
+  validarPrimeraCompra,
+  marcarBeneficioUsadoEnDispositivo
+} from './beneficio-primera-compra.js?v=1';
 
 let pagoMetodo       = 'efectivo';
 let modalidadPedido  = 'delivery';
@@ -14,9 +19,10 @@ let pedidoPendienteUrl = '';
 let pedidoPendienteTracking = null;
 let ultimoTotalRender  = null;
 let focoAnterior       = null;
+let beneficioPrimeraCompra = estadoBeneficioInicial();
 
 export const getModalidadPedido = () => modalidadPedido;
-export const getCostoEnvio = () => {
+const getCostoEnvioBase = () => {
   if (modalidadPedido === 'retiro') return 0;
   const sel     = document.getElementById('cliente-comuna');
   const comuna  = sel?.value?.trim();
@@ -25,6 +31,10 @@ export const getCostoEnvio = () => {
   const gratisDesde  = Number(DATA.negocio.envio_gratis_desde) || 0;
   if (gratisDesde > 0 && subtotal >= gratisDesde) return 0;
   return DATA.negocio.costos_envio[comuna] || 0;
+};
+export const getCostoEnvio = () => {
+  const base = getCostoEnvioBase();
+  return beneficioPrimeraCompraActivo() && base > 0 ? 0 : base;
 };
 
 export function renderCarrito() {
@@ -72,16 +82,22 @@ export function renderCarrito() {
 
   const subtotal   = carrito.getTotalPrecio();
   const costoEnvio = getCostoEnvio();
+  const costoEnvioBase = getCostoEnvioBase();
   const desglose   = document.getElementById('carrito-desglose');
 
   document.getElementById('carrito-subtotal').textContent     = formatearPrecio(subtotal);
   document.getElementById('carrito-costo-envio').textContent  = modalidadPedido === 'retiro'
     ? 'Sin costo'
-    : (document.getElementById('cliente-comuna')?.value ? formatearPrecio(costoEnvio) : 'Por calcular');
+    : (document.getElementById('cliente-comuna')?.value
+      ? (beneficioPrimeraCompraActivo() && costoEnvioBase > 0 ? `Gratis (${formatearPrecio(costoEnvioBase)})` : formatearPrecio(costoEnvio))
+      : 'Por calcular');
   document.getElementById('carrito-comuna-label').textContent = modalidadPedido === 'retiro'
     ? 'retiro'
     : (document.getElementById('cliente-comuna')?.value || 'según comuna');
+  const beneficioFila = document.getElementById('carrito-beneficio-primera-compra');
+  if (beneficioFila) beneficioFila.hidden = !(beneficioPrimeraCompraActivo() && costoEnvioBase > 0);
   desglose.style.display = '';
+  actualizarUIBeneficioPrimeraCompra();
 
   const totalActual = subtotal + costoEnvio;
   totalEl.textContent = formatearPrecio(totalActual);
@@ -148,7 +164,10 @@ export function inicializarComunas() {
     opt.value = opt.textContent = c;
     sel.appendChild(opt);
   });
-  sel.addEventListener('change', renderCarrito);
+  sel.addEventListener('change', () => {
+    invalidarBeneficioSiCambianDatos();
+    renderCarrito();
+  });
 }
 
 export function inicializarModalidad() {
@@ -173,6 +192,7 @@ export function inicializarModalidad() {
         }
       });
       document.querySelectorAll('.campo-retiro').forEach(el => { el.hidden = modalidadPedido !== 'retiro'; });
+      if (modalidadPedido === 'retiro') invalidarBeneficioPrimeraCompra('El beneficio aplica solo a delivery.');
       guardarDatosCliente();
       renderCarrito();
     });
@@ -199,9 +219,15 @@ export function inicializarFormularioCliente() {
       el.classList.remove('campo-error');
       el.setAttribute('aria-invalid', 'false');
       document.getElementById('form-error').textContent = '';
+      invalidarBeneficioSiCambianDatos();
       guardarDatosCliente();
+      renderCarrito();
     });
-    el.addEventListener('change', guardarDatosCliente);
+    el.addEventListener('change', () => {
+      invalidarBeneficioSiCambianDatos();
+      guardarDatosCliente();
+      renderCarrito();
+    });
   });
   renderCarrito();
 }
@@ -215,7 +241,7 @@ export function inicializarPrivacidad() {
 
   document.getElementById('borrar-datos').addEventListener('click', () => {
     if (!window.confirm('¿Quieres borrar tus datos, favoritos, carrito y último pedido de este dispositivo?')) return;
-    borrarDatosLocales(['sushinan-cliente', 'sushinan-ultimo-pedido', 'sushinan-carrito', 'sushinan-favoritos']);
+    borrarDatosLocales(['sushinan-cliente', 'sushinan-ultimo-pedido', 'sushinan-carrito', 'sushinan-favoritos', 'sushinan-device-id', 'sushinan-primera-compra-usada']);
     resetFavoritos();
     document.querySelectorAll('.cliente-campos input').forEach(input => {
       if (input.type === 'checkbox') input.checked = false;
@@ -368,6 +394,13 @@ export function inicializarPago() {
   });
 }
 
+export function inicializarBeneficioPrimeraCompra() {
+  actualizarUIBeneficioPrimeraCompra();
+  document.getElementById('primera-compra-validar')?.addEventListener('click', () => {
+    validarBeneficioPrimeraCompraManual();
+  });
+}
+
 export function inicializarConfirmacion() {
   const overlay = document.getElementById('confirmacion-overlay');
   const cerrar  = cerrarConfirmacion;
@@ -377,6 +410,9 @@ export function inicializarConfirmacion() {
   document.getElementById('confirmacion-continuar').addEventListener('click', () => {
     if (!pedidoPendienteUrl) return;
     guardarUltimoPedidoConfirmado();
+    if (pedidoPendienteTracking?.beneficioPrimeraCompra?.aplicado) {
+      marcarBeneficioUsadoEnDispositivo(pedidoPendienteTracking.beneficioPrimeraCompra.cliente);
+    }
     enviarPedidoGenerado(pedidoPendienteTracking);
     const ventana = window.open(pedidoPendienteUrl, '_blank');
     if (ventana) ventana.opener = null;
@@ -401,6 +437,195 @@ export function inicializarWspFlotante() {
 }
 
 // ── Internos ────────────────────────────────────────────────────────────────
+
+function estadoBeneficioInicial() {
+  return {
+    estado: 'idle',
+    token: '',
+    clienteClave: '',
+    cliente: null,
+    ahorro: 0,
+    motivo: '',
+    coincidencias: []
+  };
+}
+
+function leerClienteBeneficioActual() {
+  const telefono = normalizarTelefono(document.getElementById('cliente-telefono')?.value || '');
+  return prepararClienteBeneficio({
+    nombre: document.getElementById('cliente-nombre')?.value || '',
+    telefono: telefono || '',
+    direccion: document.getElementById('cliente-direccion')?.value || '',
+    comuna: document.getElementById('cliente-comuna')?.value || ''
+  });
+}
+
+function beneficioPrimeraCompraActivo() {
+  if (modalidadPedido !== 'delivery') return false;
+  if (beneficioPrimeraCompra.estado !== 'aplicado') return false;
+  return beneficioPrimeraCompra.clienteClave === leerClienteBeneficioActual().clave;
+}
+
+function invalidarBeneficioPrimeraCompra(motivo = '') {
+  beneficioPrimeraCompra = { ...estadoBeneficioInicial(), estado: motivo ? 'idle' : 'idle', motivo };
+  actualizarUIBeneficioPrimeraCompra();
+}
+
+function invalidarBeneficioSiCambianDatos() {
+  if (beneficioPrimeraCompra.estado === 'idle') return;
+  const cliente = leerClienteBeneficioActual();
+  if (beneficioPrimeraCompra.clienteClave && beneficioPrimeraCompra.clienteClave !== cliente.clave) {
+    beneficioPrimeraCompra = {
+      ...estadoBeneficioInicial(),
+      estado: 'idle',
+      motivo: 'Los datos cambiaron. Vuelve a validar el despacho gratis.'
+    };
+  }
+}
+
+function actualizarUIBeneficioPrimeraCompra() {
+  const box = document.getElementById('primera-compra-box');
+  const estado = document.getElementById('primera-compra-estado');
+  const boton = document.getElementById('primera-compra-validar');
+  if (!box || !estado || !boton) return;
+
+  box.classList.remove('aplicado', 'rechazado', 'error');
+  boton.disabled = false;
+  boton.textContent = 'Validar';
+
+  if (modalidadPedido !== 'delivery') {
+    estado.textContent = 'Disponible solo para pedidos con delivery.';
+    boton.disabled = true;
+    return;
+  }
+
+  const costoBase = getCostoEnvioBase();
+  const tieneComuna = Boolean(document.getElementById('cliente-comuna')?.value);
+  if (tieneComuna && costoBase === 0) {
+    estado.textContent = 'Tu envío ya figura sin costo para este pedido.';
+    boton.disabled = true;
+    return;
+  }
+
+  if (beneficioPrimeraCompra.estado === 'validando') {
+    estado.textContent = 'Validando si corresponde el despacho gratis...';
+    boton.textContent = 'Validando...';
+    boton.disabled = true;
+    return;
+  }
+
+  if (beneficioPrimeraCompra.estado === 'aplicado' && beneficioPrimeraCompraActivo()) {
+    box.classList.add('aplicado');
+    estado.textContent = `Despacho gratis aplicado. Ahorras ${formatearPrecio(beneficioPrimeraCompra.ahorro)}.`;
+    boton.textContent = 'Aplicado';
+    boton.disabled = true;
+    return;
+  }
+
+  if (beneficioPrimeraCompra.estado === 'rechazado') {
+    box.classList.add('rechazado');
+    estado.textContent = beneficioPrimeraCompra.motivo || 'El beneficio ya fue usado con estos datos.';
+    boton.textContent = 'Revalidar';
+    return;
+  }
+
+  if (beneficioPrimeraCompra.estado === 'error') {
+    box.classList.add('error');
+    estado.textContent = beneficioPrimeraCompra.motivo || 'No se pudo validar ahora. Puedes pedir normalmente.';
+    boton.textContent = 'Reintentar';
+    return;
+  }
+
+  estado.textContent = beneficioPrimeraCompra.motivo || 'Valida con tu teléfono, dirección y este dispositivo.';
+}
+
+async function validarBeneficioPrimeraCompraManual() {
+  return validarBeneficioPrimeraCompraInterno({ silencioso: false, forzar: true });
+}
+
+async function validarBeneficioPrimeraCompraAutomatico() {
+  return validarBeneficioPrimeraCompraInterno({ silencioso: true, forzar: false });
+}
+
+async function validarBeneficioPrimeraCompraInterno({ silencioso = false, forzar = false } = {}) {
+  if (modalidadPedido !== 'delivery') return false;
+  if (beneficioPrimeraCompraActivo()) return true;
+
+  const costoBase = getCostoEnvioBase();
+  if (costoBase <= 0) return false;
+
+  const telefono = normalizarTelefono(document.getElementById('cliente-telefono')?.value || '');
+  const direccion = document.getElementById('cliente-direccion')?.value.trim();
+  const comuna = document.getElementById('cliente-comuna')?.value.trim();
+  if (!telefono || !direccion || !comuna) {
+    if (!silencioso) {
+      beneficioPrimeraCompra = {
+        ...estadoBeneficioInicial(),
+        estado: 'error',
+        motivo: 'Completa teléfono, dirección y comuna para validar.'
+      };
+      actualizarUIBeneficioPrimeraCompra();
+    }
+    return false;
+  }
+
+  const cliente = leerClienteBeneficioActual();
+  if (!forzar && beneficioPrimeraCompra.estado === 'rechazado' && beneficioPrimeraCompra.clienteClave === cliente.clave) {
+    return false;
+  }
+
+  beneficioPrimeraCompra = {
+    ...estadoBeneficioInicial(),
+    estado: 'validando',
+    clienteClave: cliente.clave,
+    cliente,
+    ahorro: costoBase
+  };
+  actualizarUIBeneficioPrimeraCompra();
+
+  const resultado = await validarPrimeraCompra(cliente);
+  if (beneficioPrimeraCompra.clienteClave !== cliente.clave) return false;
+
+  if (resultado.ok && resultado.elegible) {
+    beneficioPrimeraCompra = {
+      estado: 'aplicado',
+      token: resultado.token || '',
+      clienteClave: cliente.clave,
+      cliente,
+      ahorro: costoBase,
+      motivo: 'Despacho gratis aplicado.',
+      coincidencias: resultado.coincidencias?.length ? resultado.coincidencias : ['telefono', 'direccion', 'dispositivo']
+    };
+    renderCarrito();
+    return true;
+  }
+
+  beneficioPrimeraCompra = {
+    ...estadoBeneficioInicial(),
+    estado: resultado.ok ? 'rechazado' : 'error',
+    clienteClave: cliente.clave,
+    cliente,
+    ahorro: 0,
+    motivo: resultado.motivo || (resultado.ok
+      ? 'Este beneficio ya fue usado con estos datos.'
+      : 'No se pudo validar ahora. Puedes pedir normalmente.'),
+    coincidencias: resultado.coincidencias || []
+  };
+  renderCarrito();
+  return false;
+}
+
+function obtenerBeneficioPrimeraCompraParaPedido(ahorro) {
+  if (!beneficioPrimeraCompraActivo() || ahorro <= 0) return { aplicado: false };
+  return {
+    aplicado: true,
+    tipo: 'despacho_gratis_primera_compra',
+    ahorro,
+    token: beneficioPrimeraCompra.token,
+    validadoPor: beneficioPrimeraCompra.coincidencias,
+    cliente: beneficioPrimeraCompra.cliente
+  };
+}
 
 function guardarDatosCliente() {
   try {
@@ -507,6 +732,11 @@ function abrirConfirmacion(url, resumen, trackingPayload) {
       <strong>${item.cantidad}× ${escaparHtml(item.nombre)}</strong>
       <span>${formatearPrecio(item.total)}</span>
     </div>`).join('');
+  const beneficioHtml = resumen.beneficio?.aplicado ? `
+    <div class="confirmacion-beneficio">
+      <span>Beneficio</span>
+      <strong>Despacho gratis (-${formatearPrecio(resumen.beneficio.ahorro)})</strong>
+    </div>` : '';
 
   document.getElementById('confirmacion-resumen').innerHTML = `
     <div class="confirmacion-productos">
@@ -516,6 +746,7 @@ function abrirConfirmacion(url, resumen, trackingPayload) {
     <div><span>Modalidad</span><strong>${escaparHtml(resumen.modalidad)}</strong></div>
     <div><span>Fecha y hora</span><strong>${escaparHtml(resumen.programacion)}</strong></div>
     <div><span>Método de pago</span><strong>${escaparHtml(resumen.pago)}</strong></div>
+    ${beneficioHtml}
     <div class="confirmacion-total"><span>Total</span><strong>${formatearPrecio(resumen.total)}</strong></div>`;
 
   const overlay = document.getElementById('confirmacion-overlay');
@@ -538,7 +769,7 @@ function cerrarConfirmacion() {
   focoAnterior?.focus();
 }
 
-function enviarPedidoWhatsapp() {
+async function enviarPedidoWhatsapp() {
   const entries = Object.values(carrito.items);
   if (entries.length === 0) return;
 
@@ -585,15 +816,18 @@ function enviarPedidoWhatsapp() {
   error.textContent = '';
   telefonoEl.value = telefono;
   guardarDatosCliente();
+  await validarBeneficioPrimeraCompraAutomatico();
 
   const textoPago = {
     efectivo:      'Efectivo al momento de la entrega',
     transferencia: 'Transferencia — envío comprobante por este chat',
     tarjeta:       'Tarjeta al momento de la entrega',
   };
+  const costoEnvioBase = getCostoEnvioBase();
   const costoEnvio    = getCostoEnvio();
   const subtotal      = carrito.getTotalPrecio();
   const totalConEnvio = subtotal + costoEnvio;
+  const beneficioPedido = obtenerBeneficioPrimeraCompraParaPedido(costoEnvioBase);
   const idsBebidas    = new Set(
     (DATA.categorias.find(c => c.id === 'bebidas')?.productos || []).map(p => p.id)
   );
@@ -622,11 +856,17 @@ function enviarPedidoWhatsapp() {
   msg += `${detalle}\n\n`;
   msg += `Subtotal: ${formatearPrecio(subtotal)}\n`;
   msg += modalidadPedido === 'delivery'
-    ? `Envío (${comuna}): ${formatearPrecio(costoEnvio)}\n`
+    ? (beneficioPedido.aplicado
+      ? `Envío (${comuna}): Gratis por primera compra (antes ${formatearPrecio(costoEnvioBase)})\n`
+      : `Envío (${comuna}): ${formatearPrecio(costoEnvio)}\n`)
     : 'Retiro en local: Sin costo\n';
   msg += `*TOTAL: ${formatearPrecio(totalConEnvio)}*\n\n`;
   msg += `Modalidad: ${modalidadTexto}\n`;
   msg += `Pago: ${textoPago[pagoMetodo]}\n`;
+  if (beneficioPedido.aplicado) {
+    msg += `Beneficio aplicado: Despacho gratis por primera compra\n`;
+    msg += `Validado por: teléfono, dirección y dispositivo\n`;
+  }
   msg += `Nombre: ${nombre}\n`;
   msg += `Teléfono: ${telefono}`;
   if (modalidadPedido === 'delivery') msg += `\nDirección: ${direccion}, ${comuna}`;
@@ -650,6 +890,7 @@ function enviarPedidoWhatsapp() {
     modalidad:     modalidadTexto,
     programacion:  programarPedido ? `${fechaPedido} · ${horaPedido}` : 'Lo antes posible',
     pago:          textoPago[pagoMetodo],
+    beneficio:     beneficioPedido,
     total:         totalConEnvio
   }, {
     orderId:       crearIdPedido(),
@@ -666,6 +907,7 @@ function enviarPedidoWhatsapp() {
     total:         totalConEnvio,
     cantidadItems: carrito.getTotalItems(),
     incluyeBebidas,
+    beneficioPrimeraCompra: beneficioPedido,
     preferencias:  {
       palillos,
       sinSoya,

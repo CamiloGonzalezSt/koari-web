@@ -80,6 +80,7 @@ function normalizarPedido(input, req) {
     total: dinero(input.total),
     cantidadItems: entero(input.cantidadItems) || items.reduce((suma, item) => suma + item.cantidad, 0),
     incluyeBebidas: Boolean(input.incluyeBebidas),
+    beneficioPrimeraCompra: normalizarBeneficioPrimeraCompra(input.beneficioPrimeraCompra),
     preferencias: {
       palillos: texto(input.preferencias?.palillos, 20),
       sinSoya: Boolean(input.preferencias?.sinSoya),
@@ -102,6 +103,28 @@ function dinero(valor) {
 function entero(valor) {
   const numero = Number(valor);
   return Number.isFinite(numero) && numero > 0 ? Math.floor(numero) : 0;
+}
+
+function normalizarBeneficioPrimeraCompra(input = {}) {
+  const aplicado = Boolean(input.aplicado);
+  if (!aplicado) return { aplicado: false };
+  return {
+    aplicado: true,
+    tipo: texto(input.tipo || 'despacho_gratis_primera_compra', 80),
+    ahorro: dinero(input.ahorro),
+    token: texto(input.token, 120),
+    validadoPor: Array.isArray(input.validadoPor) ? input.validadoPor.map(v => texto(v, 40)).filter(Boolean) : [],
+    cliente: {
+      nombre: texto(input.cliente?.nombre, 120),
+      nombreNormalizado: texto(input.cliente?.nombreNormalizado, 120),
+      telefono: texto(input.cliente?.telefono, 20),
+      direccion: texto(input.cliente?.direccion, 180),
+      direccionNormalizada: texto(input.cliente?.direccionNormalizada, 180),
+      comuna: texto(input.cliente?.comuna, 80),
+      comunaNormalizada: texto(input.cliente?.comunaNormalizada, 80),
+      deviceId: texto(input.cliente?.deviceId, 80)
+    }
+  };
 }
 
 function crearIdPedido() {

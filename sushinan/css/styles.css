@@ -1054,6 +1054,13 @@ header, nav, main, aside, footer, .hero, .overlay {
   color: var(--dorado);
 }
 
+.carrito__desglose-beneficio {
+  margin-top: 5px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  color: #75e89d;
+}
+
 .carrito__total {
   display: flex;
   justify-content: space-between;
@@ -1492,6 +1499,74 @@ header, nav, main, aside, footer, .hero, .overlay {
 .privacidad-local p { margin: 7px 0; color: var(--texto-3); font-size: .66rem; line-height: 1.45; }
 .privacidad-local button { border: 0; color: #d99; background: none; font-size: .68rem; text-decoration: underline; cursor: pointer; }
 .footer__politica { margin-top: 5px; color: #777; font-size: .64rem; }
+
+.primera-compra {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(117,232,157,.28);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(117,232,157,.12), rgba(255,192,64,.06));
+}
+
+.primera-compra.aplicado {
+  border-color: rgba(117,232,157,.55);
+  box-shadow: 0 0 18px rgba(117,232,157,.12);
+}
+
+.primera-compra.rechazado,
+.primera-compra.error {
+  border-color: rgba(255,139,154,.32);
+  background: rgba(232,17,45,.08);
+}
+
+.primera-compra__contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.primera-compra strong {
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: .86rem;
+  letter-spacing: .3px;
+}
+
+.primera-compra span {
+  color: var(--texto-2);
+  font-size: .68rem;
+  line-height: 1.35;
+}
+
+.primera-compra.aplicado span { color: #a9f2bf; }
+.primera-compra.rechazado span,
+.primera-compra.error span { color: #ffb4bf; }
+
+.primera-compra button {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #07180d;
+  background: #75e89d;
+  font-family: 'Oswald', sans-serif;
+  font-size: .76rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.primera-compra button:hover { transform: translateY(-1px); }
+.primera-compra button:disabled { opacity: .6; cursor: wait; transform: none; }
+
+@media (max-width: 380px) {
+  .primera-compra { grid-template-columns: 1fr; }
+  .primera-compra button { width: 100%; }
+}
 
 @media (max-width: 380px) {
   .preferencias-checks,

@@ -13,8 +13,8 @@ import {
   renderCarrito, inicializarEventosCarrito, inicializarComunas,
   inicializarModalidad, inicializarFormularioCliente, inicializarPrivacidad,
   inicializarProgramacionPedido, inicializarUltimoPedido, inicializarPago,
-  inicializarConfirmacion, inicializarWspFlotante
-} from './modules/checkout.js?v=2';
+  inicializarBeneficioPrimeraCompra, inicializarConfirmacion, inicializarWspFlotante
+} from './modules/checkout.js?v=3';
 
 document.addEventListener('DOMContentLoaded', async () => {
   await cargarDatos();
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   inicializarEventosCarrito();
   inicializarUltimoPedido();
   inicializarPago();
+  inicializarBeneficioPrimeraCompra();
   inicializarBusqueda();
   inicializarWspFlotante();
   inicializarModal();

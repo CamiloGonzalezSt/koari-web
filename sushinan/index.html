@@ -76,7 +76,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=51">
+  <link rel="stylesheet" href="css/styles.css?v=52">
 </head>
 <body>
 
@@ -201,6 +201,13 @@
               <option value="">Selecciona tu comuna...</option>
             </select>
           </div>
+          <div class="primera-compra campo-delivery" id="primera-compra-box">
+            <div class="primera-compra__contenido">
+              <strong>Primera compra: despacho gratis</strong>
+              <span id="primera-compra-estado">Valida con tu teléfono, dirección y este dispositivo.</span>
+            </div>
+            <button id="primera-compra-validar" type="button">Validar</button>
+          </div>
           <div class="cliente-campo">
             <label for="cliente-nota">Nota o alergias (opcional)</label>
             <input type="text" id="cliente-nota" placeholder="Ej: alergia al camarón, sin ají...">
@@ -292,6 +299,10 @@
         <div class="carrito__desglose-fila carrito__desglose-envio">
           <span>Envío (<span id="carrito-comuna-label"></span>)</span>
           <span id="carrito-costo-envio">$0</span>
+        </div>
+        <div class="carrito__desglose-fila carrito__desglose-beneficio" id="carrito-beneficio-primera-compra" hidden>
+          <span>Beneficio</span>
+          <span>Despacho gratis primera compra</span>
         </div>
       </div>
       <p class="carrito__aviso" id="carrito-aviso"></p>
@@ -408,6 +419,6 @@
     </div>
   </footer>
 
-  <script type="module" src="js/app.js?v=32"></script>
+  <script type="module" src="js/app.js?v=33"></script>
 </body>
 </html>
