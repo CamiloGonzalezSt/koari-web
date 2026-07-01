@@ -62,27 +62,11 @@ function doPost(e) {
 
 function validarBeneficioPrimeraCompra(beneficio) {
   const cliente = normalizarClienteBeneficio(beneficio.cliente || {});
-  if (!cliente.telefono || !cliente.direccionNormalizada || !cliente.comunaNormalizada || !cliente.deviceId) {
+  if (!tieneDatosClienteBeneficio(cliente)) {
     return { ok: false, elegible: false, motivo: 'Faltan datos para validar el beneficio.' };
   }
 
-  const sheet = obtenerHoja(HOJA_BENEFICIOS, HEADERS_BENEFICIOS);
-  const rows = leerObjetos(sheet);
-  const coincidencias = [];
-
-  rows.forEach(row => {
-    const estado = String(row['Estado'] || '').toLowerCase();
-    if (estado && estado !== 'usado') return;
-
-    if (String(row['Teléfono'] || '') === cliente.telefono) coincidencias.push('telefono');
-    if (String(row['Device ID'] || '') === cliente.deviceId) coincidencias.push('dispositivo');
-    if (
-      String(row['Dirección normalizada'] || '') === cliente.direccionNormalizada &&
-      String(row['Comuna normalizada'] || '') === cliente.comunaNormalizada
-    ) coincidencias.push('direccion');
-  });
-
-  const unicas = [...new Set(coincidencias)];
+  const unicas = obtenerCoincidenciasBeneficio(cliente);
   if (unicas.length) {
     return {
       ok: true,
@@ -101,10 +85,57 @@ function validarBeneficioPrimeraCompra(beneficio) {
   };
 }
 
+function tieneDatosClienteBeneficio(cliente) {
+  return Boolean(cliente.telefono && cliente.direccionNormalizada && cliente.comunaNormalizada && cliente.deviceId);
+}
+
+function obtenerCoincidenciasBeneficio(cliente, opciones) {
+  const sheet = obtenerHoja(HOJA_BENEFICIOS, HEADERS_BENEFICIOS);
+  const rows = leerObjetos(sheet);
+  const coincidencias = [];
+  const pedidoExcluido = texto(opciones && opciones.excluirPedidoId, 80);
+
+  rows.forEach(row => {
+    const estado = String(row[HEADERS_BENEFICIOS[12]] || '').toLowerCase();
+    if (estado && estado !== 'usado') return;
+    if (pedidoExcluido && String(row[HEADERS_BENEFICIOS[1]] || '') === pedidoExcluido) return;
+
+    if (String(row[HEADERS_BENEFICIOS[2]] || '') === cliente.telefono) coincidencias.push('telefono');
+    if (String(row[HEADERS_BENEFICIOS[9]] || '') === cliente.deviceId) coincidencias.push('dispositivo');
+    if (
+      String(row[HEADERS_BENEFICIOS[6]] || '') === cliente.direccionNormalizada &&
+      String(row[HEADERS_BENEFICIOS[8]] || '') === cliente.comunaNormalizada
+    ) coincidencias.push('direccion');
+  });
+
+  return [...new Set(coincidencias)];
+}
 function registrarPedido(pedido) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(5000);
+  try {
+    return registrarPedidoConLock(pedido);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function registrarPedidoConLock(pedido) {
   const sheet = obtenerHoja(HOJA_PEDIDOS, HEADERS_PEDIDOS);
+  const pedidoId = String(pedido.orderId || '');
+  if (pedidoId) {
+    const existePedido = leerObjetos(sheet).some(row => String(row[HEADERS_PEDIDOS[1]] || '') === pedidoId);
+    if (existePedido) return { ok: true, duplicado: true, motivo: 'Pedido ya registrado.' };
+  }
+
   const beneficio = pedido.beneficioPrimeraCompra || {};
   const clienteBeneficio = normalizarClienteBeneficio(beneficio.cliente || {});
+  const beneficioSolicitado = Boolean(beneficio.aplicado);
+  const beneficioConDatos = tieneDatosClienteBeneficio(clienteBeneficio);
+  const coincidenciasBeneficio = beneficioSolicitado && beneficioConDatos
+    ? obtenerCoincidenciasBeneficio(clienteBeneficio)
+    : [];
+  const beneficioAceptado = beneficioSolicitado && beneficioConDatos && coincidenciasBeneficio.length === 0;
 
   const productos = (pedido.items || [])
     .map(item => `${item.cantidad}x ${item.nombre} (${item.precioUnitario})`)
@@ -126,63 +157,73 @@ function registrarPedido(pedido) {
     pedido.preferencias && pedido.preferencias.notaCliente ? 'Con nota' : ''
   ].filter(Boolean).join(', ');
 
-  appendObjeto(sheet, HEADERS_PEDIDOS, {
-    'Recibido': pedido.recibidoEn || new Date().toISOString(),
-    'ID pedido': pedido.orderId || '',
-    'Evento': pedido.evento || '',
-    'Modalidad': pedido.modalidad || '',
-    'Comuna': pedido.comuna || '',
-    'Pago': pedido.pago || '',
-    'Programación': programacion,
-    'Subtotal': pedido.subtotal || 0,
-    'Envío': pedido.envio || 0,
-    'Total': pedido.total || 0,
-    'Cantidad items': pedido.cantidadItems || 0,
-    'Incluye bebidas': pedido.incluyeBebidas ? 'Sí' : 'No',
-    'Preferencias': preferencias,
-    'Productos': productos,
-    'Promociones': promociones,
-    'Beneficio primera compra': beneficio.aplicado ? 'Sí' : 'No',
-    'Ahorro beneficio': beneficio.aplicado ? beneficio.ahorro || 0 : 0,
-    'Teléfono beneficio': beneficio.aplicado ? clienteBeneficio.telefono : '',
-    'Nombre beneficio': beneficio.aplicado ? clienteBeneficio.nombre : '',
-    'Dirección beneficio': beneficio.aplicado ? clienteBeneficio.direccion : '',
-    'Device ID beneficio': beneficio.aplicado ? clienteBeneficio.deviceId : '',
-    'Página': pedido.pagina || ''
-  });
+  const fila = {};
+  fila[HEADERS_PEDIDOS[0]] = pedido.recibidoEn || new Date().toISOString();
+  fila[HEADERS_PEDIDOS[1]] = pedido.orderId || '';
+  fila[HEADERS_PEDIDOS[2]] = pedido.evento || '';
+  fila[HEADERS_PEDIDOS[3]] = pedido.modalidad || '';
+  fila[HEADERS_PEDIDOS[4]] = pedido.comuna || '';
+  fila[HEADERS_PEDIDOS[5]] = pedido.pago || '';
+  fila[HEADERS_PEDIDOS[6]] = programacion;
+  fila[HEADERS_PEDIDOS[7]] = pedido.subtotal || 0;
+  fila[HEADERS_PEDIDOS[8]] = pedido.envio || 0;
+  fila[HEADERS_PEDIDOS[9]] = pedido.total || 0;
+  fila[HEADERS_PEDIDOS[10]] = pedido.cantidadItems || 0;
+  fila[HEADERS_PEDIDOS[11]] = pedido.incluyeBebidas ? 'Sí' : 'No';
+  fila[HEADERS_PEDIDOS[12]] = preferencias;
+  fila[HEADERS_PEDIDOS[13]] = productos;
+  fila[HEADERS_PEDIDOS[14]] = promociones;
+  fila[HEADERS_PEDIDOS[15]] = beneficioAceptado
+    ? 'Sí'
+    : (beneficioSolicitado ? `Bloqueado repetido: ${coincidenciasBeneficio.join(', ') || 'sin datos'}` : 'No');
+  fila[HEADERS_PEDIDOS[16]] = beneficioAceptado ? beneficio.ahorro || 0 : 0;
+  fila[HEADERS_PEDIDOS[17]] = beneficioSolicitado ? clienteBeneficio.telefono : '';
+  fila[HEADERS_PEDIDOS[18]] = beneficioSolicitado ? clienteBeneficio.nombre : '';
+  fila[HEADERS_PEDIDOS[19]] = beneficioSolicitado ? clienteBeneficio.direccion : '';
+  fila[HEADERS_PEDIDOS[20]] = beneficioSolicitado ? clienteBeneficio.deviceId : '';
+  fila[HEADERS_PEDIDOS[21]] = pedido.pagina || '';
 
-  if (beneficio.aplicado) {
+  appendObjeto(sheet, HEADERS_PEDIDOS, fila);
+
+  if (beneficioAceptado) {
     registrarUsoBeneficio(pedido, beneficio, clienteBeneficio);
   }
 
-  return { ok: true };
+  return {
+    ok: true,
+    beneficioAceptado,
+    beneficioBloqueado: beneficioSolicitado && !beneficioAceptado,
+    coincidenciasBeneficio
+  };
 }
-
 function registrarUsoBeneficio(pedido, beneficio, cliente) {
-  if (!cliente.telefono || !cliente.direccionNormalizada || !cliente.comunaNormalizada || !cliente.deviceId) return;
+  if (!tieneDatosClienteBeneficio(cliente)) return;
 
   const sheet = obtenerHoja(HOJA_BENEFICIOS, HEADERS_BENEFICIOS);
   const rows = leerObjetos(sheet);
-  const existePedido = rows.some(row => String(row['ID pedido'] || '') === String(pedido.orderId || ''));
+  const existePedido = rows.some(row => String(row[HEADERS_BENEFICIOS[1]] || '') === String(pedido.orderId || ''));
   if (existePedido) return;
 
-  appendObjeto(sheet, HEADERS_BENEFICIOS, {
-    'Fecha uso': new Date().toISOString(),
-    'ID pedido': pedido.orderId || '',
-    'Teléfono': cliente.telefono,
-    'Nombre': cliente.nombre,
-    'Nombre normalizado': cliente.nombreNormalizado,
-    'Dirección': cliente.direccion,
-    'Dirección normalizada': cliente.direccionNormalizada,
-    'Comuna': cliente.comuna,
-    'Comuna normalizada': cliente.comunaNormalizada,
-    'Device ID': cliente.deviceId,
-    'Token': beneficio.token || '',
-    'Ahorro': beneficio.ahorro || 0,
-    'Estado': 'usado'
-  });
-}
+  const coincidencias = obtenerCoincidenciasBeneficio(cliente);
+  if (coincidencias.length) return;
 
+  const fila = {};
+  fila[HEADERS_BENEFICIOS[0]] = new Date().toISOString();
+  fila[HEADERS_BENEFICIOS[1]] = pedido.orderId || '';
+  fila[HEADERS_BENEFICIOS[2]] = cliente.telefono;
+  fila[HEADERS_BENEFICIOS[3]] = cliente.nombre;
+  fila[HEADERS_BENEFICIOS[4]] = cliente.nombreNormalizado;
+  fila[HEADERS_BENEFICIOS[5]] = cliente.direccion;
+  fila[HEADERS_BENEFICIOS[6]] = cliente.direccionNormalizada;
+  fila[HEADERS_BENEFICIOS[7]] = cliente.comuna;
+  fila[HEADERS_BENEFICIOS[8]] = cliente.comunaNormalizada;
+  fila[HEADERS_BENEFICIOS[9]] = cliente.deviceId;
+  fila[HEADERS_BENEFICIOS[10]] = beneficio.token || '';
+  fila[HEADERS_BENEFICIOS[11]] = beneficio.ahorro || 0;
+  fila[HEADERS_BENEFICIOS[12]] = 'usado';
+
+  appendObjeto(sheet, HEADERS_BENEFICIOS, fila);
+}
 function normalizarClienteBeneficio(input) {
   return {
     nombre: texto(input.nombre, 120),

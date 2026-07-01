@@ -28,6 +28,9 @@ module.exports = async function handler(req, res) {
     }
 
     const secret = process.env.PEDIDOS_WEBHOOK_SECRET || process.env.SUSHINAN_PEDIDOS_WEBHOOK_SECRET || '';
+    const bloqueoBeneficio = await obtenerBloqueoBeneficioRepetido(webhookUrl, secret, pedido.beneficioPrimeraCompra);
+    if (bloqueoBeneficio) bloquearBeneficioPrimeraCompra(pedido, bloqueoBeneficio);
+
     const respuesta = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -44,6 +47,50 @@ module.exports = async function handler(req, res) {
   }
 };
 
+async function obtenerBloqueoBeneficioRepetido(webhookUrl, secret, beneficio) {
+  if (!beneficio || !beneficio.aplicado || !beneficio.cliente) return null;
+
+  try {
+    const respuesta = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret,
+        accion: 'validar_beneficio_primera_compra',
+        beneficio: {
+          tipo: beneficio.tipo || 'despacho_gratis_primera_compra',
+          cliente: beneficio.cliente,
+          solicitadoEn: new Date().toISOString()
+        }
+      })
+    });
+
+    const data = await respuesta.json().catch(() => ({}));
+    if (respuesta.ok && data.ok && data.elegible === false) {
+      return {
+        motivo: texto(data.motivo, 180) || 'Beneficio ya usado.',
+        coincidencias: Array.isArray(data.coincidencias) ? data.coincidencias.map(v => texto(v, 40)).filter(Boolean) : []
+      };
+    }
+  } catch (_) {}
+
+  return null;
+}
+
+function bloquearBeneficioPrimeraCompra(pedido, bloqueo) {
+  const ahorro = dinero(pedido.beneficioPrimeraCompra?.ahorro);
+  pedido.beneficioPrimeraCompra = {
+    aplicado: false,
+    bloqueado: true,
+    motivo: bloqueo.motivo,
+    coincidencias: bloqueo.coincidencias
+  };
+
+  if (ahorro > 0 && pedido.envio === 0) {
+    pedido.envio = ahorro;
+    pedido.total = Math.max(pedido.subtotal + pedido.envio, pedido.total + ahorro);
+  }
+}
 function normalizarPedido(input, req) {
   const items = Array.isArray(input.items) ? input.items.slice(0, MAX_ITEMS).map(item => ({
     id: texto(item.id, 100),

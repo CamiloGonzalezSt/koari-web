@@ -1,4 +1,6 @@
 const assert = require('assert/strict');
+const fs = require('fs');
+const path = require('path');
 const validarRoot = require('../api/primera-compra.js');
 const validarSitio = require('../sushinan/api/primera-compra.js');
 const pedidos = require('../api/pedidos.js');
@@ -96,16 +98,56 @@ function pedidoConBeneficio() {
   assert.equal(res.body.elegible, false);
   assert.deepEqual(res.body.coincidencias, ['telefono']);
 
+  const llamadasPedidoValido = [];
   global.fetch = async (url, opciones) => {
-    llamada = { url, body: JSON.parse(opciones.body) };
-    return { ok: true };
+    const body = JSON.parse(opciones.body);
+    llamadasPedidoValido.push({ url, body });
+    if (body.accion === 'validar_beneficio_primera_compra') {
+      return { ok: true, json: async () => ({ ok: true, elegible: true, token: 'BPC-OK' }) };
+    }
+    return { ok: true, json: async () => ({ ok: true }) };
   };
   res = await llamar(pedidos, { method: 'POST', body: pedidoConBeneficio() });
   assert.equal(res.statusCode, 200);
-  assert.equal(llamada.body.pedido.beneficioPrimeraCompra.aplicado, true);
-  assert.equal(llamada.body.pedido.beneficioPrimeraCompra.cliente.telefono, '56912345678');
-  assert.equal(llamada.body.pedido.envio, 0);
-  assert.equal(llamada.body.pedido.total, 10000);
+  assert.equal(llamadasPedidoValido.length, 2);
+  assert.equal(llamadasPedidoValido[0].body.accion, 'validar_beneficio_primera_compra');
+  assert.equal(llamadasPedidoValido[1].body.pedido.beneficioPrimeraCompra.aplicado, true);
+  assert.equal(llamadasPedidoValido[1].body.pedido.beneficioPrimeraCompra.cliente.telefono, '56912345678');
+  assert.equal(llamadasPedidoValido[1].body.pedido.envio, 0);
+  assert.equal(llamadasPedidoValido[1].body.pedido.total, 10000);
+
+  const llamadasPedidoBloqueado = [];
+  global.fetch = async (url, opciones) => {
+    const body = JSON.parse(opciones.body);
+    llamadasPedidoBloqueado.push({ url, body });
+    if (body.accion === 'validar_beneficio_primera_compra') {
+      return { ok: true, json: async () => ({ ok: true, elegible: false, motivo: 'Ya usado', coincidencias: ['telefono'] }) };
+    }
+    return { ok: true, json: async () => ({ ok: true }) };
+  };
+  const pedidoBloqueado = pedidoConBeneficio();
+  pedidoBloqueado.orderId = 'SN-BENEFICIO-BLOQUEADO-TEST';
+  res = await llamar(pedidos, { method: 'POST', body: pedidoBloqueado });
+  assert.equal(res.statusCode, 200);
+  assert.equal(llamadasPedidoBloqueado.length, 2);
+  assert.equal(llamadasPedidoBloqueado[1].body.pedido.beneficioPrimeraCompra.aplicado, false);
+  assert.equal(llamadasPedidoBloqueado[1].body.pedido.beneficioPrimeraCompra.bloqueado, true);
+  assert.equal(llamadasPedidoBloqueado[1].body.pedido.envio, 1500);
+  assert.equal(llamadasPedidoBloqueado[1].body.pedido.total, 11500);
+
+  const checkoutFuente = fs.readFileSync(path.join(__dirname, '../sushinan/js/modules/checkout.js'), 'utf8');
+  assert.match(checkoutFuente, /beneficioUsadoEnDispositivo\(\)\?\.usado/);
+  assert.match(checkoutFuente, /bloquearBeneficioPrimeraCompraUsadoLocalmente/);
+  assert.match(checkoutFuente, /confirmacionEnviando/);
+
+  const appsScriptFuente = fs.readFileSync(path.join(__dirname, 'apps-script-pedidos.gs'), 'utf8');
+  assert.match(appsScriptFuente, /LockService\.getScriptLock/);
+  assert.match(appsScriptFuente, /obtenerCoincidenciasBeneficio/);
+  assert.match(appsScriptFuente, /Bloqueado repetido/);
+
+  const apiPedidosFuente = fs.readFileSync(path.join(__dirname, '../api/pedidos.js'), 'utf8');
+  assert.match(apiPedidosFuente, /obtenerBloqueoBeneficioRepetido/);
+  assert.match(apiPedidosFuente, /bloquearBeneficioPrimeraCompra/);
 
   global.fetch = fetchOriginal;
   delete process.env.PEDIDOS_WEBHOOK_URL;

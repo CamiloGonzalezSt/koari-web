@@ -10,7 +10,8 @@ import { crearIdPedido, enviarPedidoGenerado } from './tracking-pedidos.js';
 import {
   prepararClienteBeneficio,
   validarPrimeraCompra,
-  marcarBeneficioUsadoEnDispositivo
+  marcarBeneficioUsadoEnDispositivo,
+  beneficioUsadoEnDispositivo
 } from './beneficio-primera-compra.js?v=1';
 
 let pagoMetodo       = 'efectivo';
@@ -20,6 +21,7 @@ let pedidoPendienteTracking = null;
 let ultimoTotalRender  = null;
 let focoAnterior       = null;
 let beneficioPrimeraCompra = estadoBeneficioInicial();
+let confirmacionEnviando = false;
 
 export const getModalidadPedido = () => modalidadPedido;
 const getCostoEnvioBase = () => {
@@ -408,10 +410,14 @@ export function inicializarConfirmacion() {
   document.getElementById('confirmacion-volver').addEventListener('click', cerrar);
   overlay.addEventListener('click', e => { if (e.target === overlay) cerrar(); });
   document.getElementById('confirmacion-continuar').addEventListener('click', () => {
-    if (!pedidoPendienteUrl) return;
+    if (!pedidoPendienteUrl || confirmacionEnviando) return;
+    confirmacionEnviando = true;
+    document.getElementById('confirmacion-continuar').disabled = true;
     guardarUltimoPedidoConfirmado();
     if (pedidoPendienteTracking?.beneficioPrimeraCompra?.aplicado) {
       marcarBeneficioUsadoEnDispositivo(pedidoPendienteTracking.beneficioPrimeraCompra.cliente);
+      bloquearBeneficioPrimeraCompraUsadoLocalmente();
+      renderCarrito();
     }
     enviarPedidoGenerado(pedidoPendienteTracking);
     const ventana = window.open(pedidoPendienteUrl, '_blank');
@@ -462,8 +468,23 @@ function leerClienteBeneficioActual() {
 
 function beneficioPrimeraCompraActivo() {
   if (modalidadPedido !== 'delivery') return false;
+  if (beneficioUsadoEnDispositivo()?.usado) return false;
   if (beneficioPrimeraCompra.estado !== 'aplicado') return false;
   return beneficioPrimeraCompra.clienteClave === leerClienteBeneficioActual().clave;
+}
+
+function bloquearBeneficioPrimeraCompraUsadoLocalmente(motivo = 'Este dispositivo ya usó el beneficio de primera compra.') {
+  if (!beneficioUsadoEnDispositivo()?.usado) return false;
+  const cliente = leerClienteBeneficioActual();
+  beneficioPrimeraCompra = {
+    ...estadoBeneficioInicial(),
+    estado: 'rechazado',
+    clienteClave: cliente.clave,
+    cliente,
+    motivo,
+    coincidencias: ['dispositivo']
+  };
+  return true;
 }
 
 function invalidarBeneficioPrimeraCompra(motivo = '') {
@@ -507,6 +528,8 @@ function actualizarUIBeneficioPrimeraCompra() {
     return;
   }
 
+  bloquearBeneficioPrimeraCompraUsadoLocalmente();
+
   if (beneficioPrimeraCompra.estado === 'validando') {
     estado.textContent = 'Validando si corresponde el despacho gratis...';
     boton.textContent = 'Validando...';
@@ -549,10 +572,14 @@ async function validarBeneficioPrimeraCompraAutomatico() {
 
 async function validarBeneficioPrimeraCompraInterno({ silencioso = false, forzar = false } = {}) {
   if (modalidadPedido !== 'delivery') return false;
-  if (beneficioPrimeraCompraActivo()) return true;
 
   const costoBase = getCostoEnvioBase();
   if (costoBase <= 0) return false;
+  if (bloquearBeneficioPrimeraCompraUsadoLocalmente()) {
+    renderCarrito();
+    return false;
+  }
+  if (beneficioPrimeraCompraActivo()) return true;
 
   const telefono = normalizarTelefono(document.getElementById('cliente-telefono')?.value || '');
   const direccion = document.getElementById('cliente-direccion')?.value.trim();
@@ -616,6 +643,7 @@ async function validarBeneficioPrimeraCompraInterno({ silencioso = false, forzar
 }
 
 function obtenerBeneficioPrimeraCompraParaPedido(ahorro) {
+  if (beneficioUsadoEnDispositivo()?.usado) return { aplicado: false };
   if (!beneficioPrimeraCompraActivo() || ahorro <= 0) return { aplicado: false };
   return {
     aplicado: true,
@@ -724,7 +752,10 @@ function actualizarPanelPago() {
 function abrirConfirmacion(url, resumen, trackingPayload) {
   pedidoPendienteUrl = url;
   pedidoPendienteTracking = trackingPayload;
+  confirmacionEnviando = false;
   focoAnterior       = document.activeElement;
+  const botonContinuar = document.getElementById('confirmacion-continuar');
+  if (botonContinuar) botonContinuar.disabled = false;
   document.getElementById('toast-carrito').classList.remove('visible');
 
   const productosHtml = resumen.productos.map(item => `
@@ -763,6 +794,9 @@ function cerrarConfirmacion() {
   overlay.setAttribute('aria-hidden', 'true');
   pedidoPendienteUrl = '';
   pedidoPendienteTracking = null;
+  confirmacionEnviando = false;
+  const botonContinuar = document.getElementById('confirmacion-continuar');
+  if (botonContinuar) botonContinuar.disabled = false;
   if (!document.getElementById('carrito-panel').classList.contains('abierto') &&
       !document.getElementById('modal-overlay').classList.contains('activo'))
     desbloquearScroll();
